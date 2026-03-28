@@ -9,4 +9,4 @@ binding = "ASSETS"
 
 [vars]
 ADMIN_PASSWORD = "changeme123"
-RESEND_API_KEY = "REDACTED"
+# RESEND_API_KEY is stored as a Cloudflare secret — do not add here
