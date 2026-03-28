@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/benson/Downloads/us.sitesucker.mac.sitesucker/counselhound.com/**)",
+      "Bash(python3:*)",
+      "Bash(for i:*)",
+      "Bash(do echo:*)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  }
+}
