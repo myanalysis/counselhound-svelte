@@ -1,15 +1,17 @@
 <script lang="ts">
+  import { lang } from '$lib/i18n';
+
   const results = [
-    { label: 'Georgia Opioid Settlement',                 amount: 'Over $1B over the next 18 years' },
-    { label: 'Opioid Abuse Litigation',                   amount: '$728M for Alabama' },
-    { label: 'Mississippi Opioid Settlement',             amount: '$370 Million' },
-    { label: 'Blue Cross Blue Shield Provider Settlement', amount: '$2.67B Settlement Fund' },
-    { label: 'Consumer Fraud',                            amount: '$5 Million' },
-    { label: 'Defective Products',                        amount: '$3 Million' },
-    { label: 'Medical Injury',                            amount: '$1 Million' },
-    { label: 'Personal Injury',                           amount: '$3 Million' },
-    { label: 'Abuse Litigation',                          amount: '$1 Million' },
-    { label: 'Personal Injury',                           amount: '$4 Million' },
+    { label: 'Georgia Opioid Settlement',                  labelEs: 'Acuerdo Opioides Georgia',               amount: 'Over $1B over the next 18 years' },
+    { label: 'Opioid Abuse Litigation',                    labelEs: 'Litigio de Abuso de Opioides',           amount: '$728M for Alabama' },
+    { label: 'Mississippi Opioid Settlement',              labelEs: 'Acuerdo Opioides Mississippi',           amount: '$370 Million' },
+    { label: 'Blue Cross Blue Shield Provider Settlement', labelEs: 'Acuerdo Blue Cross Blue Shield',         amount: '$2.67B Settlement Fund' },
+    { label: 'Consumer Fraud',                             labelEs: 'Fraude al Consumidor',                   amount: '$5 Million' },
+    { label: 'Defective Products',                         labelEs: 'Productos Defectuosos',                  amount: '$3 Million' },
+    { label: 'Medical Injury',                             labelEs: 'Lesiones Médicas',                       amount: '$1 Million' },
+    { label: 'Personal Injury',                            labelEs: 'Lesiones Personales',                    amount: '$3 Million' },
+    { label: 'Abuse Litigation',                           labelEs: 'Litigios de Abuso',                      amount: '$1 Million' },
+    { label: 'Personal Injury',                            labelEs: 'Lesiones Personales',                    amount: '$4 Million' },
   ];
   const doubled = [...results, ...results];
 </script>
@@ -22,11 +24,11 @@
         class:border-l={i !== 0}
         style={i !== 0 ? 'border-color: rgba(255,255,255,0.2);' : ''}>
         <p class="text-[10px] font-black uppercase tracking-[2px] mb-2 bg-linear-to-r from-[#ffe3b3] to-[#b78a2b] bg-clip-text text-transparent">
-          {r.label}
+          {$lang === 'es' ? r.labelEs : r.label}
         </p>
-        <h3 class="text-base font-black uppercase text-white">
+        <p class="text-base font-black uppercase text-white">
           {r.amount}
-        </h3>
+        </p>
       </div>
     {/each}
   </div>

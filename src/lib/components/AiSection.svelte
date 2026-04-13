@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { t } from '$lib/i18n';
 
   let el: HTMLElement;
   let visible = $state(false);
@@ -24,15 +25,15 @@
     <div class="transition-all duration-700"
       class:opacity-0={!visible} class:translate-y-4={!visible}
       class:opacity-100={visible} class:translate-y-0={visible}>
-      <p class="text-[#3a5166] text-xs uppercase tracking-[0.2em] mb-3 font-['Futura']">AI-Assisted Legal Guidance</p>
-      <h2 class="text-[#0D1B2A] font-['Playfair_Display'] font-bold mb-5" style="font-size: clamp(1.8rem, 3vw, 2.4rem);">
-        Chat With Our AI Legal Assistant
+      <p class="text-[#3a5166] text-xs uppercase tracking-[0.2em] mb-3 font-futura">{$t.ai_label}</p>
+      <h2 class="text-[#0D1B2A] font-playfair font-bold mb-5 text-section">
+        {$t.ai_h2}
       </h2>
       <p class="text-[#0D1B2A]/70 text-sm leading-relaxed mb-4">
-        Not sure if you have a case? Our AI assistant is available 24/7 to help you understand your legal options — no forms, no waiting, no judgment.
+        {$t.ai_p1}
       </p>
       <p class="text-[#0D1B2A]/70 text-sm leading-relaxed">
-        Describe your situation in plain English and get immediate, confidential guidance. When you're ready, we'll connect you with the right attorney.
+        {$t.ai_p2}
       </p>
     </div>
 
@@ -49,28 +50,28 @@
             </svg>
           </div>
           <div>
-            <p class="text-white text-sm font-bold leading-none font-['Futura']">Counsel Hound AI</p>
-            <p class="text-[#C9A84C] text-[11px] uppercase tracking-wider mt-0.5 font-['Futura']">Available 24/7</p>
+            <p class="text-white text-sm font-bold leading-none font-futura">{$t.ai_bot_name}</p>
+            <p class="text-[#C9A84C] text-[11px] uppercase tracking-wider mt-0.5 font-futura">{$t.ai_bot_status}</p>
           </div>
           <div class="ml-auto flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-green-400"></span>
-            <span class="text-white/50 text-[11px]">Online</span>
+            <span class="text-white/50 text-[11px]">{$t.ai_bot_online}</span>
           </div>
         </div>
 
         <div class="bg-white/10 px-4 py-3 text-white/70 text-sm leading-relaxed italic">
-          "Hi — have you or a loved one been injured or wronged? Tell me what happened and I'll help you understand your options."
+          {$t.ai_bot_greeting}
         </div>
 
         <button
           type="button"
           onclick={openChat}
-          class="w-full py-4 bg-[#C9A84C] text-[#0D1B2A] text-xs font-bold uppercase tracking-[0.15em] hover:brightness-110 transition-all duration-200 font-['Futura']"
+          class="w-full py-4 bg-[#C9A84C] text-[#0D1B2A] text-xs font-bold uppercase tracking-[0.15em] hover:brightness-110 transition-all duration-200 font-futura"
         >
-          Start the Conversation
+          {$t.ai_cta}
         </button>
 
-        <p class="text-center text-white/30 text-[11px]">Free &mdash; Confidential &mdash; No obligation</p>
+        <p class="text-center text-white/30 text-[11px]">{$t.ai_disclaimer}</p>
       </div>
     </div>
 

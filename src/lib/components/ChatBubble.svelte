@@ -1,15 +1,20 @@
 <script lang="ts">
-  import { browser } from '$app/environment';
   import { tick, onMount } from 'svelte';
+  import { t } from '$lib/i18n';
 
   type Message = { role: 'user' | 'assistant'; content: string };
 
   let open = $state(false);
   let input = $state('');
   let loading = $state(false);
-  let messages = $state<Message[]>([
-    { role: 'assistant', content: 'Hi, I\'m the Counsel Hound assistant. Have you or a loved one been injured or wronged? Tell me what happened and I\'ll help you understand your options.' }
-  ]);
+  let messages = $state<Message[]>([]);
+
+  // Reactive initial greeting based on language
+  $effect(() => {
+    if (messages.length === 0) {
+      messages = [{ role: 'assistant', content: $t.chat_greeting }];
+    }
+  });
 
   let messagesEl = $state<HTMLDivElement | null>(null);
 
@@ -24,6 +29,8 @@
     input = '';
     messages = [...messages, { role: 'user', content: text }];
     loading = true;
+    // Add empty assistant message to show typing dots immediately
+    messages = [...messages, { role: 'assistant', content: '' }];
     await scrollToBottom();
 
     try {
@@ -31,27 +38,23 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: messages.map(m => ({ role: m.role, content: m.content }))
+          // Strip the client-side greeting (first assistant message) before sending to API
+          messages: messages
+            .filter((m, i) => !(i === 0 && m.role === 'assistant'))
+            .filter(m => m.content !== '')
+            .map(m => ({ role: m.role, content: m.content }))
         }),
       });
 
-      if (!res.ok || !res.body) throw new Error('Failed');
+      if (!res.ok) throw new Error('Failed');
 
-      messages = [...messages, { role: 'assistant', content: '' }];
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value);
-        messages = messages.map((m, i) =>
-          i === messages.length - 1 ? { ...m, content: m.content + chunk } : m
-        );
-        await scrollToBottom();
-      }
+      const reply = await res.text();
+      // Replace the empty placeholder with the real reply
+      messages = [...messages.slice(0, -1), { role: 'assistant', content: reply }];
+      await scrollToBottom();
     } catch {
-      messages = [...messages, { role: 'assistant', content: 'Sorry, something went wrong. Please call us at +1-855-804-6863.' }];
+      // Replace empty placeholder with error message
+      messages = [...messages.slice(0, -1), { role: 'assistant', content: $t.chat_error }];
     } finally {
       loading = false;
       await scrollToBottom();
@@ -96,7 +99,7 @@
   onclick={() => open = !open}
   data-chat-bubble
   class="fixed bottom-6 right-6 z-999998 w-14 h-14 rounded-full bg-[#C9A84C] shadow-xl flex items-center justify-center hover:brightness-110 transition-all duration-200"
-  aria-label="Chat with us"
+  aria-label={$t.chat_aria_label}
 >
   {#if open}
     <svg class="w-5 h-5 text-[#0D1B2A]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -113,7 +116,7 @@
 
 <!-- Chat window -->
 {#if open}
-  <div data-chat-window class="fixed bottom-24 right-6 z-999997 w-[360px] max-w-[calc(100vw-3rem)] bg-white shadow-2xl flex flex-col rounded-none overflow-hidden"
+  <div data-chat-window class="fixed bottom-24 right-6 z-999997 w-90 max-w-[calc(100vw-3rem)] bg-white shadow-2xl flex flex-col rounded-none overflow-hidden"
     style="height: 480px;">
 
     <!-- Header -->
@@ -125,11 +128,11 @@
       </div>
       <div>
         <p class="text-white text-sm font-bold leading-none">Counsel Hound</p>
-        <p class="text-[#d8b269] text-[11px] uppercase tracking-wider mt-0.5">Legal Assistant</p>
+        <p class="text-[#d8b269] text-[11px] uppercase tracking-wider mt-0.5">{$t.chat_header_sub}</p>
       </div>
       <div class="ml-auto flex items-center gap-1.5">
         <span class="w-2 h-2 rounded-full bg-green-400"></span>
-        <span class="text-white/60 text-[11px]">Online</span>
+        <span class="text-white/60 text-[11px]">{$t.chat_online}</span>
       </div>
     </div>
 
@@ -160,7 +163,7 @@
       <textarea
         bind:value={input}
         onkeydown={handleKey}
-        placeholder="Type your question…"
+        placeholder={$t.chat_placeholder}
         rows="1"
         disabled={loading}
         class="flex-1 resize-none px-3 py-2 text-sm border border-gray-200 outline-none focus:border-[#162d39] transition-colors bg-white disabled:opacity-50"
@@ -171,14 +174,14 @@
         disabled={loading || !input.trim()}
         class="px-4 py-2 bg-[#162d39] text-white text-sm font-semibold hover:bg-[#1e3a4a] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
       >
-        Send
+        {$t.chat_send}
       </button>
     </div>
 
     <!-- Footer nudge -->
     <div class="px-4 py-2 bg-white border-t border-gray-100 text-center shrink-0">
       <a href="tel:+18558046863" class="text-[11px] text-[#162d39] font-semibold hover:text-[#d8b269] transition-colors uppercase tracking-wider">
-        Or call +1-855-804-6863 &mdash; Free Consultation
+        {$t.chat_call_cta}
       </a>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
   let { data }: { data: PageData } = $props();
-  const { post } = data;
+  const post = $derived(data.post);
 
   function formatDate(s: string) {
     return new Date(s).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -21,30 +21,47 @@
   <meta property="og:description" content={post.excerpt} />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://counselhound.com/news-and-blogs/{post.slug}" />
+  <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta property="article:published_time" content={post.created_at} />
+  <meta property="article:modified_time" content={post.updated_at ?? post.created_at} />
+  <meta property="article:author" content="Counsel Hound" />
+  <meta property="article:section" content={post.category} />
   <meta name="twitter:title" content="{post.title} | Counsel Hound" />
   <meta name="twitter:description" content={post.excerpt} />
-  {@html `<script type="application/ld+json">${JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": post.title,
-    "description": post.excerpt,
-    "datePublished": post.created_at,
-    "author": { "@type": "Organization", "name": "Counsel Hound" },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Counsel Hound",
-      "logo": { "@type": "ImageObject", "url": "https://counselhound.com/main-logo.svg" }
+  {@html `<script type="application/ld+json">${JSON.stringify([
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": "https://counselhound.com/og-default.jpg",
+      "datePublished": post.created_at,
+      "dateModified": post.updated_at ?? post.created_at,
+      "author": { "@type": "Organization", "name": "Counsel Hound", "url": "https://counselhound.com" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Counsel Hound",
+        "logo": { "@type": "ImageObject", "url": "https://counselhound.com/main-logo.svg" }
+      },
+      "url": `https://counselhound.com/news-and-blogs/${post.slug}`
     },
-    "url": `https://counselhound.com/news-and-blogs/${post.slug}`
-  })}</script>`}
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://counselhound.com" },
+        { "@type": "ListItem", "position": 2, "name": "Legal News & Blogs", "item": "https://counselhound.com/news-and-blogs" },
+        { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://counselhound.com/news-and-blogs/${post.slug}` },
+      ]
+    }
+  ])}</script>`}
 </svelte:head>
 
 <!-- Banner -->
 <div class="bg-[#162d39] pt-40 pb-16 px-6">
   <div class="max-w-3xl mx-auto">
     <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-4">{post.category} &bull; {formatDate(post.created_at)}</p>
-    <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight font-['Futura']">{post.title}</h1>
+    <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight font-futura">{post.title}</h1>
   </div>
 </div>
 

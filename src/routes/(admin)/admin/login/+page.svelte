@@ -22,8 +22,9 @@
 
     <form method="POST" class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
-        <label class="text-xs uppercase tracking-widest text-white font-['Futura']">Email</label>
+        <label for="email" class="text-xs uppercase tracking-widest text-white font-futura">Email</label>
         <input
+          id="email"
           name="email"
           type="email"
           bind:value={email}
@@ -34,8 +35,9 @@
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="text-xs uppercase tracking-widest text-white font-['Futura']">Password</label>
+        <label for="password" class="text-xs uppercase tracking-widest text-white font-futura">Password</label>
         <input
+          id="password"
           name="password"
           type="password"
           bind:value={password}

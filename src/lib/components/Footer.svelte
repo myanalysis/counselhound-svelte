@@ -1,7 +1,9 @@
 <script lang="ts">
   import { config } from '$lib/config';
+  import { t, lang } from '$lib/i18n';
+  import ObfuscatedEmail from '$lib/components/ObfuscatedEmail.svelte';
 
-  const areas = [
+  const areasEn = [
     { label: 'Abuse Litigation',   slug: 'abuse-litigation' },
     { label: 'Personal Injury',    slug: 'personal-injury' },
     { label: 'Consumer Fraud',     slug: 'consumer-fraud' },
@@ -11,6 +13,16 @@
     { label: 'Whistleblower',      slug: 'whistleblower-protection' },
     { label: 'Investment Fraud',   slug: null, href: 'https://frankowskifirm.com' },
   ];
+  const areasEs = [
+    { label: 'Litigios de Abuso',        slug: 'abuse-litigation' },
+    { label: 'Lesiones Personales',      slug: 'personal-injury' },
+    { label: 'Fraude al Consumidor',     slug: 'consumer-fraud' },
+    { label: 'Productos Defectuosos',    slug: 'defective-products' },
+    { label: 'Lesiones Médicas',         slug: 'medical-injury' },
+    { label: 'Daños por Tóxicos',        slug: 'toxic-torts' },
+    { label: 'Denunciantes',             slug: 'whistleblower-protection' },
+    { label: 'Fraude de Inversión',      slug: null, href: 'https://frankowskifirm.com' },
+  ];
 </script>
 
 <footer class="bg-[#060E16] border-t border-[rgba(201,168,76,0.2)]">
@@ -19,29 +31,27 @@
     <!-- Brand -->
     <div>
       <div class="flex items-center gap-3 mb-5">
-        <img src="/icon-only.svg" alt="Counsel Hound" class="h-12 w-auto" />
+        <img src="/icon-only.svg" alt="Counsel Hound" class="h-12 w-auto" width="48" height="48" />
         <div class="flex flex-col leading-none gap-0.5">
-          <span class="text-[#d8b269] font-light text-lg tracking-[0.15em] font-['Futura'] uppercase">Counsel Hound</span>
-          <span class="text-white/60 text-[8px] uppercase tracking-[0.3em] font-['Futura']">Legal Advocates</span>
+          <span class="text-[#d8b269] font-light text-lg tracking-[0.15em] font-futura uppercase">Counsel Hound</span>
+          <span class="text-white/60 text-[8px] uppercase tracking-[0.3em] font-futura">Legal Advocates</span>
         </div>
       </div>
-      <p class="text-xs leading-relaxed mb-5 text-[rgba(240,237,232,0.4)]">
-        Connecting people with trusted legal professionals — free of charge. No fees until we win.
+      <p class="text-xs leading-relaxed mb-5 text-[rgba(240,237,232,0.65)]">
+        {$t.footer_tagline}
       </p>
-      <p class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] mb-1 font-['Futura']">Birmingham, AL</p>
-      <p class="text-xs text-[rgba(240,237,232,0.3)] mb-4">231 22nd St S #203 Birmingham AL 35233</p>
+      <p class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] mb-1 font-futura">Birmingham, AL</p>
+      <p class="text-xs text-[rgba(240,237,232,0.55)] mb-4">231 22nd St S #203 Birmingham AL 35233</p>
       <div class="flex flex-col gap-2 mb-2">
         <a href="tel:{config.phone}" class="text-sm tracking-wider text-[#C9A84C] hover:text-white transition-colors">
           {config.phoneDisplay}
         </a>
-        <a href="mailto:{config.email}" class="text-sm tracking-wider text-[#C9A84C] hover:text-white transition-colors">
-          {config.email}
-        </a>
+        <ObfuscatedEmail email={config.email} class="text-sm tracking-wider text-[#C9A84C] hover:text-white transition-colors" />
       </div>
 
       <!-- Follow Us -->
       <div class="mt-6">
-        <p class="text-xs uppercase tracking-[0.2em] mb-3 text-[#C9A84C] font-['Futura']">Follow Us</p>
+        <p class="text-xs uppercase tracking-[0.2em] mb-3 text-[#C9A84C] font-futura">{$t.footer_follow}</p>
         <div class="flex gap-3">
           <a href="https://www.facebook.com/CounselHound" target="_blank" rel="noopener" aria-label="Facebook"
             class="w-10 h-10 flex items-center justify-center bg-[#C9A84C]/10 hover:bg-[#C9A84C] text-[#C9A84C] hover:text-[#060E16] transition-all duration-200">
@@ -61,16 +71,16 @@
 
     <!-- Quick Links -->
     <div>
-      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-['Futura']">Quick Links</p>
+      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-futura">{$t.footer_quick_links}</p>
       <ul class="flex flex-col gap-3">
         {#each [
-          { label: 'Home',    href: '/' },
-          { label: 'About',   href: '/about' },
-          { label: 'Contact', href: '/contact' },
+          { label: $t.nav_home,    href: '/' },
+          { label: $t.nav_about,   href: '/about' },
+          { label: $t.nav_contact, href: '/contact' },
         ] as link}
           <li>
             <a href={link.href}
-              class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] hover:text-[#C9A84C] transition-colors font-['Futura']">
+              class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] hover:text-[#C9A84C] transition-colors font-futura">
               {link.label}
             </a>
           </li>
@@ -80,14 +90,14 @@
 
     <!-- Practice Areas -->
     <div>
-      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-['Futura']">Practice Areas</p>
+      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-futura">{$t.footer_practice_areas}</p>
       <ul class="flex flex-col gap-3">
-        {#each areas as area}
+        {#each ($lang === 'es' ? areasEs : areasEn) as area}
           <li>
             <a
               href={area.href ?? `/practice-areas/${area.slug}`}
               target={area.href ? '_blank' : undefined}
-              class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] hover:text-[#C9A84C] transition-colors font-['Futura']">
+              class="text-xs uppercase tracking-widest text-[rgba(240,237,232,0.5)] hover:text-[#C9A84C] transition-colors font-futura">
               {area.label}
             </a>
           </li>
@@ -97,7 +107,7 @@
 
     <!-- Locations -->
     <div>
-      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-['Futura']">Locations</p>
+      <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-futura">{$t.footer_locations}</p>
       <div class="flex flex-col gap-5">
         {#each [
           { city: 'Birmingham, AL', addr: '231 22nd St S #203\nBirmingham AL 35233' },
@@ -105,8 +115,8 @@
           { city: 'Houston, TX',    addr: '12 Greenway Plz #1100\nHouston TX 77027' },
         ] as loc}
           <div>
-            <p class="text-xs uppercase tracking-widest mb-1 text-[rgba(240,237,232,0.5)] font-['Futura']">{loc.city}</p>
-            <p class="text-xs leading-relaxed whitespace-pre-line text-[rgba(240,237,232,0.3)]">{loc.addr}</p>
+            <p class="text-xs uppercase tracking-widest mb-1 text-[rgba(240,237,232,0.5)] font-futura">{loc.city}</p>
+            <p class="text-xs leading-relaxed whitespace-pre-line text-[rgba(240,237,232,0.55)]">{loc.addr}</p>
           </div>
         {/each}
       </div>
@@ -116,7 +126,7 @@
 
   <!-- Bottom bar -->
   <div class="border-t border-[rgba(201,168,76,0.1)] px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 max-w-7xl mx-auto">
-    <p class="text-xs text-[rgba(240,237,232,0.3)]">© {new Date().getFullYear()} Counsel Hound. All Rights Reserved.</p>
-    <p class="text-xs text-[rgba(240,237,232,0.2)]">No attorney-client relationship is formed by use of this website.</p>
+    <p class="text-xs text-[rgba(240,237,232,0.55)]">© {new Date().getFullYear()} Counsel Hound. {$t.footer_copyright}</p>
+    <p class="text-xs text-[rgba(240,237,232,0.6)]">{$t.footer_disclaimer}</p>
   </div>
 </footer>

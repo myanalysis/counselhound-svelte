@@ -11,6 +11,7 @@
   aria-modal="true"
   aria-label="Free Case Evaluation"
 >
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <div
     class="relative bg-white w-full max-w-xl flex flex-col shadow-2xl mt-40 max-h-[calc(100dvh-160px)]"
     onclick={(e) => e.stopPropagation()}
@@ -19,7 +20,7 @@
   >
     <!-- Sticky header -->
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
-      <h3 class="text-xl font-bold text-[#162d39] font-['Futura']">Free Case Evaluation</h3>
+      <h3 class="text-xl font-bold text-[#162d39] font-futura">Free Case Evaluation</h3>
       <button
         onclick={onclose}
         class="text-gray-400 hover:text-black bg-transparent border-none cursor-pointer"

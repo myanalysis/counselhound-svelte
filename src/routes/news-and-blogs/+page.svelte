@@ -28,21 +28,23 @@
 </script>
 
 <svelte:head>
-  <title>Legal News &amp; Blogs | Counsel Hound</title>
+  <title>{data.page > 1 ? `Legal News & Blogs — Page ${data.page}` : 'Legal News & Blogs'} | Counsel Hound</title>
   <meta name="description" content="Stay informed with the latest legal news, case updates, and insights from the Counsel Hound team." />
-  <link rel="canonical" href="https://counselhound.com/news-and-blogs" />
+  <link rel="canonical" href="https://counselhound.com/news-and-blogs{data.page > 1 ? `?page=${data.page}` : ''}" />
+  {#if data.page > 1}<meta name="robots" content="noindex, follow" />{/if}
   <meta property="og:title" content="Legal News & Blogs | Counsel Hound" />
   <meta property="og:description" content="Stay informed with the latest legal news, case updates, and insights from the Counsel Hound team." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://counselhound.com/news-and-blogs" />
+  <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta name="twitter:title" content="Legal News & Blogs | Counsel Hound" />
   <meta name="twitter:description" content="Stay informed with the latest legal news, case updates, and insights from the Counsel Hound team." />
 </svelte:head>
 
 <!-- Hero -->
 <div class="bg-[#162d39] pt-40 pb-16 px-6 text-center">
-  <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3 font-['Futura']">Insights & Updates</p>
-  <h1 class="font-bold text-white font-['Playfair_Display']" style="font-size: clamp(2.5rem, 6vw, 4rem);">Legal News &amp; Blogs</h1>
+  <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3 font-futura">Insights & Updates</p>
+  <h1 class="font-bold text-white font-playfair text-hero">Legal News &amp; Blogs</h1>
 </div>
 
 <section class="py-20 px-6 bg-[#f8f7f4]">
@@ -73,15 +75,19 @@
       <a
         href="/news-and-blogs{data.q ? '?q=' + data.q : ''}"
         data-sveltekit-noscroll
-        class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors duration-150"
-        style="background: {!data.tag ? '#162d39' : 'white'}; color: {!data.tag ? 'white' : '#162d39'}; border-color: {!data.tag ? '#162d39' : '#d1d5db'};"
+        class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors duration-150 bg-white text-[#162d39] border-[#d1d5db]"
+        class:bg-[#162d39]={!data.tag}
+        class:text-white={!data.tag}
+        class:border-[#162d39]={!data.tag}
       >All</a>
       {#each ALL_TAGS as tag}
         <a
           href={tagHref(tag)}
           data-sveltekit-noscroll
-          class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors duration-150"
-          style="background: {data.tag === tag ? '#162d39' : 'white'}; color: {data.tag === tag ? 'white' : '#162d39'}; border-color: {data.tag === tag ? '#162d39' : '#d1d5db'};"
+          class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors duration-150 bg-white text-[#162d39] border-[#d1d5db]"
+          class:bg-[#162d39]={data.tag === tag}
+          class:text-white={data.tag === tag}
+          class:border-[#162d39]={data.tag === tag}
         >{tag}</a>
       {/each}
     </div>
@@ -98,8 +104,8 @@
           <div class="group flex flex-col bg-white hover:shadow-lg transition-shadow duration-300 text-left w-full">
             <div class="h-1 bg-[#d8b269]"></div>
             <div class="flex flex-col flex-1 p-6 gap-4">
-              <p class="text-[#d8b269] text-xs uppercase tracking-widest font-['Futura']">{formatDate(post.created_at)}</p>
-              <h2 class="text-[#162d39] font-bold text-lg leading-snug font-['Futura'] group-hover:text-[#d8b269] transition-colors duration-200 line-clamp-3">
+              <p class="text-[#d8b269] text-xs uppercase tracking-widest font-futura">{formatDate(post.created_at)}</p>
+              <h2 class="text-[#162d39] font-bold text-lg leading-snug font-futura group-hover:text-[#d8b269] transition-colors duration-200 line-clamp-3">
                 {post.title}
               </h2>
               <p class="text-gray-500 text-sm leading-relaxed flex-1 line-clamp-3">{post.excerpt}</p>
@@ -145,7 +151,7 @@
         })()}
         <div class="flex justify-center items-center gap-1 mt-16">
           <a href={p > 1 ? pageHref(p - 1) : undefined}
-            class="px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors duration-200 font-['Futura']"
+            class="px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors duration-200 font-futura"
             class:pointer-events-none={p === 1} class:opacity-30={p === 1}
             class:border-[#162d39]={p > 1} class:text-[#162d39]={p > 1} class:hover:bg-[#162d39]={p > 1} class:hover:text-white={p > 1}
           >&larr;</a>
@@ -155,7 +161,7 @@
               <span class="px-3 py-2 text-xs text-gray-400 select-none">…</span>
             {:else}
               <a href={pageHref(pg)}
-                class="w-9 h-9 flex items-center justify-center text-xs font-bold font-['Futura'] border transition-colors duration-200"
+                class="w-9 h-9 flex items-center justify-center text-xs font-bold font-futura border transition-colors duration-200"
                 class:bg-[#162d39]={p === pg} class:text-white={p === pg} class:border-[#162d39]={p === pg}
                 class:bg-white={p !== pg} class:text-[#162d39]={p !== pg} class:border-gray-200={p !== pg}
                 class:hover:border-[#162d39]={p !== pg}
@@ -164,12 +170,12 @@
           {/each}
 
           <a href={p < totalPages ? pageHref(p + 1) : undefined}
-            class="px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors duration-200 font-['Futura']"
+            class="px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors duration-200 font-futura"
             class:pointer-events-none={p === totalPages} class:opacity-30={p === totalPages}
             class:border-[#162d39]={p < totalPages} class:text-[#162d39]={p < totalPages} class:hover:bg-[#162d39]={p < totalPages} class:hover:text-white={p < totalPages}
           >&rarr;</a>
         </div>
-        <p class="text-center text-xs text-gray-400 mt-4 font-['Futura']">Page {p} of {totalPages}</p>
+        <p class="text-center text-xs text-gray-400 mt-4 font-futura">Page {p} of {totalPages}</p>
       {/if}
     {/if}
 

@@ -80,7 +80,7 @@
       <!-- Header -->
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-[#162d39] font-['Futura']">Blog Posts</h1>
+          <h1 class="text-2xl font-bold text-[#162d39] font-futura">Blog Posts</h1>
           <p class="text-gray-400 text-sm mt-1">{data.total} total posts</p>
         </div>
         <button
@@ -178,7 +178,7 @@
       <div class="max-w-3xl">
         <div class="flex items-center gap-4 mb-8">
           <button onclick={() => view = 'list'} class="text-gray-400 hover:text-[#162d39] text-sm transition-colors">&larr; Back</button>
-          <h1 class="text-2xl font-bold text-[#162d39] font-['Futura']">New Post</h1>
+          <h1 class="text-2xl font-bold text-[#162d39] font-futura">New Post</h1>
         </div>
 
         <form method="POST" action="?/create" class="flex flex-col gap-5">
@@ -234,7 +234,7 @@
       <div class="max-w-3xl">
         <div class="flex items-center gap-4 mb-8">
           <button onclick={() => { view = 'list'; editing = null; }} class="text-gray-400 hover:text-[#162d39] text-sm transition-colors">&larr; Back</button>
-          <h1 class="text-2xl font-bold text-[#162d39] font-['Futura']">Edit Post</h1>
+          <h1 class="text-2xl font-bold text-[#162d39] font-futura">Edit Post</h1>
         </div>
 
         <form method="POST" action="?/update" class="flex flex-col gap-5">

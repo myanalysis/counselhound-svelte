@@ -26,7 +26,7 @@
       class:opacity-0={!visible} class:opacity-100={visible}>
       <div>
         <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3">Legal Insights</p>
-        <h2 class="text-4xl font-bold text-[#162d39] font-['Playfair_Display']">News &amp; Blogs</h2>
+        <h2 class="text-4xl font-bold text-[#162d39] font-playfair">News &amp; Blogs</h2>
       </div>
       <a href="/news-and-blogs" class="text-sm font-bold uppercase tracking-widest text-[#162d39] hover:text-[#d8b269] transition-colors duration-200 hidden md:block">
         View All &rarr;
@@ -44,8 +44,8 @@
         >
           <div class="h-1 bg-[#d8b269]"></div>
           <div class="flex flex-col flex-1 p-6 gap-4">
-            <p class="text-[#d8b269] text-xs uppercase tracking-widest font-['Futura']">{formatDate(post.created_at)}</p>
-            <h3 class="text-[#162d39] font-bold text-lg leading-snug font-['Futura'] group-hover:text-[#d8b269] transition-colors duration-200 line-clamp-3">
+            <p class="text-[#d8b269] text-xs uppercase tracking-widest font-futura">{formatDate(post.created_at)}</p>
+            <h3 class="text-[#162d39] font-bold text-lg leading-snug font-futura group-hover:text-[#d8b269] transition-colors duration-200 line-clamp-3">
               {post.title}
             </h3>
             <p class="text-gray-500 text-sm leading-relaxed flex-1 line-clamp-3">{post.excerpt}</p>

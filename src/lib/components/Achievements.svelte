@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { t } from '$lib/i18n';
   let el: HTMLElement;
   let visible = $state(false);
 
@@ -17,7 +18,6 @@
     { src: '/achievement-3.svg', title: 'AV Preeminent®', desc: 'Martindale-Hubbell — Peer Rated for Highest Level of Professional Excellence' },
     { src: '/achievement-4.svg', title: 'The National Trial Lawyers', desc: 'Top 100 Trial Lawyers' },
     { src: '/achievement-5.svg', title: 'Super Lawyers®', desc: 'Richard Frankowski — SuperLawyers.com' },
-    { src: '/achievement-6.svg', title: 'Super Lawyers®', desc: 'Listed Attorney' },
   ];
 </script>
 
@@ -26,8 +26,8 @@
 
     <div class="text-center mb-14 transition-all duration-700"
       class:opacity-0={!visible} class:opacity-100={visible}>
-      <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3">Recognition</p>
-      <h2 class="text-4xl font-bold text-[#162d39] font-['Playfair_Display']">Our Achievements</h2>
+      <p class="text-[#8B6914] text-xs uppercase tracking-[0.2em] mb-3">{$t.ach_label}</p>
+      <h2 class="text-4xl font-bold text-[#162d39] font-playfair">{$t.ach_h2}</h2>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-3 gap-8 items-center">
@@ -41,10 +41,9 @@
           style="transition-delay: {i * 80}ms;"
         >
           <div class="group relative w-full max-w-56 transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_4px_16px_rgba(201,168,76,0.35)]">
-            <img src={badge.src} alt={badge.title} class="w-full h-auto object-contain block" />
-            <!-- Hover overlay — clipped to image -->
+            <img src={badge.src} alt={badge.title} class="w-full h-auto object-contain block" loading="lazy" width="224" height="224" />
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-[#162d39]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-4 text-center">
-              <p class="text-[#C9A84C] text-xs font-bold uppercase tracking-widest font-['Futura'] mb-2">{badge.title}</p>
+              <p class="text-[#C9A84C] text-xs font-bold uppercase tracking-widest font-futura mb-2">{badge.title}</p>
               <p class="text-white/80 text-xs leading-snug">{badge.desc}</p>
             </div>
           </div>

@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { enhance } from '$app/forms';
   import { config } from '$lib/config';
+  import { t, lang } from '$lib/i18n';
+  import ObfuscatedEmail from '$lib/components/ObfuscatedEmail.svelte';
 
   let el: HTMLElement;
   let visible = $state(false);
@@ -58,9 +60,13 @@
     return () => obs.disconnect();
   });
 
-  const caseTypes = [
+  const caseTypesEn = [
     'Abuse Litigation', 'Personal Injury', 'Consumer Fraud', 'Defective Products',
     'Medical Injury', 'Toxic Torts', 'Whistleblower', 'Investment Fraud', 'Other',
+  ];
+  const caseTypesEs = [
+    'Litigios de Abuso', 'Lesiones Personales', 'Fraude al Consumidor', 'Productos Defectuosos',
+    'Lesiones Médicas', 'Daños por Tóxicos', 'Denunciante', 'Fraude de Inversión', 'Otro',
   ];
 </script>
 
@@ -73,47 +79,57 @@
       <div class="transition-all duration-700"
         class:opacity-0={!visible} class:opacity-100={visible}>
 
-        <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-['Futura']">Get In Touch</p>
-        <h2 class="mb-6 text-[#162d39] font-['Playfair_Display'] font-bold" style="font-size: clamp(1.8rem, 3vw, 2.4rem);">Got Questions?</h2>
+        <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-futura">{$t.contact_label}</p>
+        <h2 class="mb-6 text-[#162d39] font-playfair font-bold text-section">{$t.contact_h2}</h2>
         <div class="w-14 h-0.5 mb-8 bg-[#C9A84C]"></div>
 
         <p class="text-sm leading-relaxed mb-10 text-gray-500">
-          Whether you're seeking advice or ready to be connected with a qualified attorney,
-          our team is ready to help. All inquiries are kept strictly confidential.
+          {$t.contact_body}
         </p>
 
         <div class="flex flex-col gap-6 mb-10">
           {#each [
-            { label: 'Phone', value: config.phoneDisplay, href: `tel:${config.phone}` },
-            { label: 'Text',  value: config.textDisplay,  href: `sms:${config.text}` },
-            { label: 'Email', value: config.email,        href: `mailto:${config.email}` },
+            { label: $t.contact_phone_label, value: config.phoneDisplay, href: `tel:${config.phone}` },
+            { label: $t.contact_text_label,  value: config.textDisplay,  href: `sms:${config.text}` },
           ] as c}
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(201,168,76,0.3)] bg-[rgba(201,168,76,0.05)]">
-                <span class="text-xs uppercase tracking-widest text-[#C9A84C] font-['Futura']">
+                <span class="text-xs uppercase tracking-widest text-[#C9A84C] font-futura">
                   {c.label[0]}
                 </span>
               </div>
               <div>
-                <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-['Futura']">{c.label}</p>
+                <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-futura">{c.label}</p>
                 <a href={c.href} class="text-sm text-[#162d39] hover:text-[#C9A84C] transition-colors">{c.value}</a>
               </div>
             </div>
           {/each}
+          <!-- Email obfuscated to prevent scraping -->
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(201,168,76,0.3)] bg-[rgba(201,168,76,0.05)]">
+              <span class="text-xs uppercase tracking-widest text-[#C9A84C] font-futura">
+                {$t.contact_email_label[0]}
+              </span>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-futura">{$t.contact_email_label}</p>
+              <ObfuscatedEmail email={config.email} class="text-sm text-[#162d39] hover:text-[#C9A84C] transition-colors" />
+            </div>
+          </div>
         </div>
 
         <div class="pt-8 border-t border-gray-200">
-          <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-['Futura']">Our Locations</p>
+          <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-futura">{$t.contact_locations_label}</p>
           <div class="flex flex-col gap-3">
             {#each locations as loc}
               <button
                 type="button"
                 onclick={() => openMap(loc)}
-                class="flex gap-3 items-start text-left group w-full hover:bg-[rgba(201,168,76,0.05)] transition-colors duration-150 p-2 -mx-2 rounded-sm"
+                class="flex gap-3 items-start text-left group w-full hover:bg-[rgba(201,168,76,0.05)] transition-colors duration-150 p-2 -mx-2 rounded-sm cursor-pointer"
               >
                 <span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-[#C9A84C] group-hover:scale-125 transition-transform duration-150"></span>
                 <div class="flex-1">
-                  <p class="text-xs uppercase tracking-widest mb-0.5 text-[#162d39] font-['Futura'] group-hover:text-[#C9A84C] transition-colors duration-150">{loc.city}</p>
+                  <p class="text-xs uppercase tracking-widest mb-0.5 text-[#162d39] font-futura group-hover:text-[#C9A84C] transition-colors duration-150">{loc.city}</p>
                   <p class="text-xs text-gray-400">{loc.addr}</p>
                 </div>
                 <svg class="w-3.5 h-3.5 text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -135,8 +151,8 @@
             <div class="w-16 h-16 rounded-full flex items-center justify-center border-2 border-[#C9A84C]">
               <svg class="w-7 h-7 text-[#C9A84C]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
             </div>
-            <h3 class="text-xl uppercase tracking-widest text-[#162d39] font-['Futura']">Message Sent</h3>
-            <p class="text-sm max-w-xs text-[rgba(240,237,232,0.6)]">We'll respond within one business day. Check your inbox for a confirmation.</p>
+            <h3 class="text-xl uppercase tracking-widest text-[#162d39] font-futura">{$t.form_success_h}</h3>
+            <p class="text-sm max-w-xs text-[rgba(240,237,232,0.6)]">{$t.form_success_p}</p>
           </div>
         {:else}
           <form
@@ -150,7 +166,7 @@
                 if (result.type === 'success') {
                   submitted = true;
                 } else if (result.type === 'failure') {
-                  error = (result.data as any)?.error || 'Something went wrong.';
+                  error = (result.data as any)?.error || $t.form_error_default;
                   await update();
                 }
               };
@@ -163,12 +179,12 @@
 
             <div class="grid sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
-                <label for="contact-name" class="text-xs uppercase tracking-widest text-[#162d39] font-['Futura']">Full Name *</label>
+                <label for="contact-name" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_name} *</label>
                 <input id="contact-name" name="name" type="text" placeholder="Jane Smith" required
                   class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
               </div>
               <div class="flex flex-col gap-2">
-                <label for="contact-email" class="text-xs uppercase tracking-widest text-[#162d39] font-['Futura']">Email *</label>
+                <label for="contact-email" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_email} *</label>
                 <input id="contact-email" name="email" type="email" placeholder="jane@email.com" required
                   class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
               </div>
@@ -176,25 +192,25 @@
 
             <div class="grid sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
-                <label for="contact-phone" class="text-xs uppercase tracking-widest text-[#162d39] font-['Futura']">Phone</label>
+                <label for="contact-phone" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_phone}</label>
                 <input id="contact-phone" name="phone" type="tel" placeholder="+1 (555) 000-0000"
                   class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
               </div>
               <div class="flex flex-col gap-2">
-                <label for="contact-case" class="text-xs uppercase tracking-widest text-[#162d39] font-['Futura']">Case Type</label>
+                <label for="contact-case" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_case_type}</label>
                 <select id="contact-case" name="caseType"
                   class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors">
-                  <option value="">Select…</option>
-                  {#each caseTypes as ct}
-                    <option value={ct}>{ct}</option>
+                  <option value="">{$t.form_case_placeholder}</option>
+                  {#each ($lang === 'es' ? caseTypesEs : caseTypesEn) as ct, i}
+                    <option value={caseTypesEn[i]}>{ct}</option>
                   {/each}
                 </select>
               </div>
             </div>
 
             <div class="flex flex-col gap-2">
-              <label for="contact-message" class="text-xs uppercase tracking-widest text-[#162d39] font-['Futura']">Message *</label>
-              <textarea id="contact-message" name="message" rows="5" placeholder="Briefly describe your situation…" required
+              <label for="contact-message" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_message} *</label>
+              <textarea id="contact-message" name="message" rows="5" placeholder={$t.form_message_placeholder} required
                 class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors resize-none"></textarea>
             </div>
 
@@ -204,11 +220,11 @@
 
             <button type="submit" disabled={submitting}
               class="w-full py-4 mt-2 bg-[#C9A84C] text-[#0D1B2A] text-xs font-bold tracking-[0.15em] uppercase hover:brightness-110 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
-              {submitting ? 'Sending…' : 'Send Message'}
+              {submitting ? $t.form_submitting : $t.form_submit}
             </button>
 
             <p class="text-xs text-center text-gray-400">
-              Your information is always kept confidential.
+              {$t.form_confidential}
             </p>
           </form>
         {/if}
@@ -238,8 +254,8 @@
       <!-- Header -->
       <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
         <div>
-          <p class="text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-['Futura'] mb-0.5">Our Location</p>
-          <p class="text-white text-sm font-bold font-['Futura']">{activeLocation.city}</p>
+          <p class="text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-futura mb-0.5">{$t.contact_map_our_location}</p>
+          <p class="text-white text-sm font-bold font-futura">{activeLocation.city}</p>
           <p class="text-white/50 text-xs mt-0.5">{activeLocation.addr}</p>
         </div>
         <button
@@ -250,7 +266,7 @@
         >&times;</button>
       </div>
 
-      <!-- Map — OpenStreetMap via Nominatim bbox, no API key required -->
+      <!-- Map -->
       <div class="relative bg-[#162d39]" style="height: 380px;">
         <iframe
           title="Office location — {activeLocation.city}"
@@ -264,13 +280,13 @@
 
       <!-- Footer -->
       <div class="flex items-center justify-between px-6 py-3 border-t border-white/10">
-        <p class="text-white/30 text-[11px]">Map data © OpenStreetMap contributors</p>
+        <p class="text-white/30 text-[11px]">{$t.contact_map_osm}</p>
         <a
           href={activeLocation.mapUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-[11px] text-[#C9A84C] font-bold uppercase tracking-widest hover:brightness-125 transition-all font-['Futura']"
-        >Open in Maps &rarr;</a>
+          class="text-[11px] text-[#C9A84C] font-bold uppercase tracking-widest hover:brightness-125 transition-all font-futura"
+        >{$t.contact_map_open} &rarr;</a>
       </div>
     </div>
   </div>

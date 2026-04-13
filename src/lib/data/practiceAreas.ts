@@ -2,6 +2,7 @@ export const practiceAreas = [
   {
     slug: 'abuse-litigation',
     label: 'Abuse Litigation',
+    ogImage: '/pa-abuse.webp',
     intro: 'Victims of abuse deserve justice. Our network of attorneys fights for survivors of institutional, sexual, and elder abuse across the United States.',
     cta: 'You Deserve Justice — We Can Help',
     subs: [
@@ -16,6 +17,7 @@ export const practiceAreas = [
   {
     slug: 'personal-injury',
     label: 'Personal Injury',
+    ogImage: '/pa-personal-injury.webp',
     intro: 'If you\'ve been injured due to someone else\'s negligence, you may be entitled to significant compensation. We connect you with proven trial attorneys.',
     cta: 'Injured? Let Us Fight For You',
     subs: [
@@ -33,6 +35,7 @@ export const practiceAreas = [
   {
     slug: 'consumer-fraud',
     label: 'Consumer Fraud',
+    ogImage: '/pa-consumer-fraud.webp',
     intro: 'When corporations deceive consumers, they must be held accountable. Our attorneys pursue class actions and individual claims to recover what you\'re owed.',
     cta: 'You Were Wronged — Get What You\'re Owed',
     subs: [
@@ -44,6 +47,7 @@ export const practiceAreas = [
   {
     slug: 'defective-products',
     label: 'Defective Products',
+    ogImage: '/pa-defective-products.webp',
     intro: 'Dangerous products cause serious harm every day. Our mass tort attorneys have recovered billions for victims of defective medical devices, drugs, and consumer goods.',
     cta: 'A Defective Product Hurt You — We Can Help',
     subs: [
@@ -63,6 +67,7 @@ export const practiceAreas = [
   {
     slug: 'medical-injury',
     label: 'Medical Injury',
+    ogImage: '/pa-medical.webp',
     intro: 'Medical negligence can change a life forever. Our attorneys specialize in complex medical malpractice cases and birth injury litigation nationwide.',
     cta: 'Medical Negligence Changed Your Life — We\'ll Fight Back',
     subs: [
@@ -74,6 +79,7 @@ export const practiceAreas = [
   {
     slug: 'toxic-torts',
     label: 'Toxic Torts',
+    ogImage: '/pa-toxic.webp',
     intro: 'Exposure to toxic chemicals and substances can cause devastating illnesses. Our attorneys hold manufacturers and employers responsible.',
     cta: 'Toxic Exposure Harmed You — Hold Them Accountable',
     subs: [
@@ -87,6 +93,7 @@ export const practiceAreas = [
   {
     slug: 'whistleblower-protection',
     label: 'Whistleblower',
+    ogImage: '/pa-whistleblower.webp',
     intro: 'Whistleblowers who expose fraud against the government are protected by law — and may be entitled to a significant financial reward.',
     cta: 'Speak Up. The Law Protects — And Rewards — You',
     subs: [

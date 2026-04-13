@@ -4,10 +4,16 @@
       "Read(//Users/benson/Downloads/us.sitesucker.mac.sitesucker/counselhound.com/**)",
       "Bash(python3:*)",
       "Bash(for i:*)",
-      "Bash(do echo:*)"
+      "Bash(do echo:*)",
+      "Read(//Users/benson/Svelte/Site Updates/frankowskifirm-svelte/src/lib/components/**)",
+      "Read(//Users/benson/Svelte/Site Updates/frankowskifirm-svelte/src/routes/churning/**)",
+      "Read(//Users/benson/Svelte/Site Updates/frankowskifirm-svelte/src/routes/variable-annuities/**)",
+      "Read(//Users/benson/Svelte/Site Updates/frankowskifirm-svelte/src/routes/ponzi-scheme/**)",
+      "Read(//Users/benson/Svelte/Site Updates/frankowskifirm-svelte/src/routes/**)"
     ],
     "additionalDirectories": [
-      "/tmp"
+      "/tmp",
+      "/Users/benson/Svelte/Site Updates/frankowskifirm-svelte/memory"
     ]
   }
 }

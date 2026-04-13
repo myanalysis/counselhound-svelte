@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { t } from '$lib/i18n';
 
   let el: HTMLElement;
   let visible = $state(false);
@@ -7,21 +8,22 @@
 
   onMount(() => {
     const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { visible = true; obs.disconnect(); }
+      if (e.isIntersecting) {
+        visible = true;
+        obs.disconnect();
+        // Only load Trustpilot when section is actually visible
+        if (!document.querySelector('script[src*="trustpilot"]')) {
+          const script = document.createElement('script');
+          script.src = '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js';
+          script.async = true;
+          script.onload = () => initWidget();
+          document.head.appendChild(script);
+        } else {
+          initWidget();
+        }
+      }
     }, { threshold: 0.15 });
     obs.observe(el);
-
-    // Load Trustpilot bootstrap if not already loaded
-    if (!document.querySelector('script[src*="trustpilot"]')) {
-      const script = document.createElement('script');
-      script.src = '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js';
-      script.async = true;
-      script.onload = () => initWidget();
-      document.head.appendChild(script);
-    } else {
-      initWidget();
-    }
-
     return () => obs.disconnect();
   });
 
@@ -37,8 +39,8 @@
 
     <div class="text-center mb-10 transition-all duration-700"
       class:opacity-0={!visible} class:opacity-100={visible}>
-      <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3">Testimonials</p>
-      <h2 class="text-4xl font-bold text-[#162d39] font-['Playfair_Display']">What Our Clients Say</h2>
+      <p class="text-[#8B6914] text-xs uppercase tracking-[0.2em] mb-3">{$t.test_label}</p>
+      <h2 class="text-4xl font-bold text-[#162d39] font-playfair">{$t.test_h2}</h2>
     </div>
 
     <div

@@ -18,23 +18,24 @@
   <meta property="og:description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://counselhound.com/about" />
+  <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta name="twitter:title" content="About Us | Counsel Hound" />
   <meta name="twitter:description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States." />
 </svelte:head>
 
 <!-- Hero -->
 <section class="relative pt-40 pb-16 px-6 overflow-hidden bg-[#0D1B2A]">
-  <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('/bg-capitol.png');"></div>
-  <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,27,42,0.6), #0D1B2A);"></div>
+  <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('/bg-capitol.webp');"></div>
+  <div class="absolute inset-0 bg-linear-to-b from-[rgba(13,27,42,0.6)] to-[#0D1B2A]"></div>
   <div class="relative z-10 max-w-4xl mx-auto text-center">
-    <p class="text-xs tracking-[0.2em] uppercase mb-4 text-[#C9A84C] font-['Futura'] transition-all duration-700"
+    <p class="text-xs tracking-[0.2em] uppercase mb-4 text-[#C9A84C] font-futura transition-all duration-700"
       class:opacity-0={!visible} class:opacity-100={visible}
       style="transition-delay: 100ms;">
       Our Story
     </p>
-    <h1 class="mb-6 text-[#F0EDE8] font-['Playfair_Display'] font-bold transition-all duration-700"
+    <h1 class="mb-6 text-[#F0EDE8] font-playfair font-bold transition-all duration-700 text-hero"
       class:opacity-0={!visible} class:-translate-y-4={!visible} class:opacity-100={visible} class:translate-y-0={visible}
-      style="font-size: clamp(2.5rem, 6vw, 4rem); transition-delay: 200ms;">
+      style="transition-delay: 200ms;">
       About Counsel Hound
     </h1>
     <div class="w-16 h-0.5 mx-auto bg-[#C9A84C] transition-all duration-700"
@@ -51,16 +52,15 @@
       class:opacity-100={visible} class:translate-x-0={visible}
       style="transition-delay: 100ms;">
       <button type="button" onclick={() => videoOpen = true} class="relative block w-full group cursor-pointer">
-        <img src="/richard-video.png" alt="Richard Frankowski" class="w-full border-2 border-[#C9A84C] group-hover:brightness-90 transition-all duration-200" />
+        <img src="/richard-video.webp" alt="Richard Frankowski" class="w-full border-2 border-[#C9A84C] group-hover:brightness-90 transition-all duration-200" width="800" height="600" />
       </button>
     </div>
     <div class="transition-all duration-700"
       class:opacity-0={!visible} class:translate-x-6={!visible}
       class:opacity-100={visible} class:translate-x-0={visible}
       style="transition-delay: 200ms;">
-      <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-['Futura']">Our Founder</p>
-      <h2 class="mb-6 text-[#162d39] font-['Playfair_Display'] font-bold"
-        style="font-size: clamp(1.8rem, 3vw, 2.6rem);">
+      <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-futura">Our Founder</p>
+      <h2 class="mb-6 text-[#162d39] font-playfair font-bold text-section-lg">
         About Counsel Hound
       </h2>
       <div class="w-14 h-0.5 mb-8 bg-[#C9A84C]"></div>
@@ -78,7 +78,7 @@
           { label: 'Published', value: '2 Books — ABA\n& PIABA Press' },
         ] as c}
           <div class="border-l-2 border-[#C9A84C] pl-3">
-            <p class="text-[10px] uppercase tracking-widest text-[#C9A84C] font-['Futura'] mb-0.5">{c.label}</p>
+            <p class="text-[10px] uppercase tracking-widest text-[#C9A84C] font-futura mb-0.5">{c.label}</p>
             <p class="text-xs text-gray-600 leading-snug whitespace-pre-line">{c.value}</p>
           </div>
         {/each}
@@ -88,7 +88,7 @@
         "We don't all have a best friend that is a lawyer — but now, you do."
       </blockquote>
       <img src="/signature.webp" alt="Richard Frankowski signature" class="mt-6 h-16 w-auto opacity-80" />
-      <p class="mt-2 text-sm text-gray-500 font-['Futura'] uppercase tracking-widest">CEO &amp; Founder, Counsel Hound</p>
+      <p class="mt-2 text-sm text-gray-500 font-futura uppercase tracking-widest">CEO &amp; Founder, Counsel Hound</p>
     </div>
   </div>
 </section>
@@ -97,9 +97,8 @@
 <section class="py-16 px-6 bg-[#f8f7f4]">
   <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
     <div>
-      <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-['Futura']">How We Work</p>
-      <h2 class="mb-6 text-[#162d39] font-['Playfair_Display'] font-bold"
-        style="font-size: clamp(1.8rem, 3vw, 2.6rem);">
+      <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-futura">How We Work</p>
+      <h2 class="mb-6 text-[#162d39] font-playfair font-bold text-section-lg">
         Our Approach
       </h2>
       <div class="w-14 h-0.5 mb-8 bg-[#C9A84C]"></div>
@@ -116,7 +115,7 @@
           { label: 'No Cost to You', desc: 'Our referral service is completely free — no fees unless you win.' },
         ] as p}
           <div class="border-t-2 border-[#C9A84C] pt-4">
-            <p class="text-xs uppercase tracking-widest font-bold text-[#162d39] mb-1 font-['Futura']">{p.label}</p>
+            <p class="text-xs uppercase tracking-widest font-bold text-[#162d39] mb-1 font-futura">{p.label}</p>
             <p class="text-xs text-gray-500 leading-relaxed">{p.desc}</p>
           </div>
         {/each}
@@ -132,9 +131,8 @@
       ] as stat, i}
         <div class="bg-[#162d39] p-8 flex flex-col justify-center"
           class:bg-[#C9A84C]={i === 0}>
-          <p class="font-black font-['Futura'] leading-none mb-2 {i === 0 ? 'text-[#162d39]' : 'text-[#C9A84C]'}"
-            style="font-size: clamp(2rem, 4vw, 3rem);">{stat.value}</p>
-          <p class="text-xs uppercase tracking-widest font-['Futura'] {i === 0 ? 'text-[#162d39]/70' : 'text-white/70'}">{stat.label}</p>
+          <p class="font-black font-futura leading-none mb-2 text-section-xl {i === 0 ? 'text-[#162d39]' : 'text-[#C9A84C]'}">{stat.value}</p>
+          <p class="text-xs uppercase tracking-widest font-futura {i === 0 ? 'text-[#162d39]/70' : 'text-white/70'}">{stat.label}</p>
         </div>
       {/each}
     </div>
@@ -144,9 +142,8 @@
 <!-- CTA -->
 <section class="py-16 px-6 text-center bg-[#C9A84C]">
   <div class="max-w-2xl mx-auto">
-    <p class="text-xs tracking-[0.2em] uppercase mb-4 text-[#0D1B2A]/60 font-['Futura']">Get Started</p>
-    <h2 class="mb-6 text-[#0D1B2A] font-['Playfair_Display'] font-bold"
-      style="font-size: clamp(1.8rem, 3vw, 2.4rem);">
+    <p class="text-xs tracking-[0.2em] uppercase mb-4 text-[#0D1B2A]/60 font-futura">Get Started</p>
+    <h2 class="mb-6 text-[#0D1B2A] font-playfair font-bold text-section">
       Ready to Find Your Lawyer?
     </h2>
     <p class="text-sm mb-10 text-[#0D1B2A]/70">
@@ -167,7 +164,7 @@
 >
   <div class="bg-black w-full max-w-4xl mx-4 shadow-2xl flex flex-col">
     <div class="flex items-center justify-between px-5 py-3 bg-[#162d39]">
-      <span class="text-white/70 text-xs uppercase tracking-widest font-['Futura']">Richard Frankowski</span>
+      <span class="text-white/70 text-xs uppercase tracking-widest font-futura">Richard Frankowski</span>
       <button type="button" onclick={() => videoOpen = false}
         class="text-white/60 hover:text-white transition-colors text-2xl leading-none">&times;</button>
     </div>

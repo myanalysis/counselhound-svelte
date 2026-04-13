@@ -6,7 +6,17 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
-		// interface Platform {}
+		interface Platform {
+			env: {
+				AI: Ai;
+				ASSETS: Fetcher;
+				ADMIN_PASSWORD: string;
+				ANTHROPIC_API_KEY: string;
+				RESEND_API_KEY: string;
+			};
+			cf: CfProperties;
+			ctx: ExecutionContext;
+		}
 	}
 }
 

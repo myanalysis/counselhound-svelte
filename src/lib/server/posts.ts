@@ -9,6 +9,7 @@ export type Post = {
   tags: string[];
   published: boolean;
   created_at: string;
+  updated_at?: string;
   views: number;
   likes: number;
 };

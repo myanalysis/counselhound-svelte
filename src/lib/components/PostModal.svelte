@@ -35,8 +35,8 @@
     <!-- Header -->
     <div class="sticky top-0 bg-white border-b border-gray-100 px-8 py-5 flex items-start justify-between gap-4 z-10">
       <div>
-        <p class="text-[#d8b269] text-xs uppercase tracking-widest font-['Futura'] mb-1">{formatDate(post.created_at)}</p>
-        <h2 class="text-2xl font-bold text-[#162d39] font-['Futura'] leading-snug">{post.title}</h2>
+        <p class="text-[#d8b269] text-xs uppercase tracking-widest font-futura mb-1">{formatDate(post.created_at)}</p>
+        <h2 class="text-2xl font-bold text-[#162d39] font-futura leading-snug">{post.title}</h2>
       </div>
       <div class="flex items-center gap-4 shrink-0">
         <button type="button" onclick={(e) => { e.stopPropagation(); like(); }} class="flex items-center gap-1.5 text-sm font-semibold" class:text-[#d8b269]={liked} class:text-[#162d39]={!liked}>

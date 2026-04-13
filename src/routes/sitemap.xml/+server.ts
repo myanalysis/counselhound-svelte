@@ -4,11 +4,13 @@ import type { RequestHandler } from './$types';
 
 const SITE = 'https://counselhound.com';
 
+const TODAY = new Date().toISOString().split('T')[0];
+
 const STATIC_PAGES = [
-  { url: '/',               priority: '1.0', changefreq: 'weekly'  },
-  { url: '/about',          priority: '0.8', changefreq: 'monthly' },
-  { url: '/contact',        priority: '0.8', changefreq: 'monthly' },
-  { url: '/news-and-blogs', priority: '0.9', changefreq: 'daily'   },
+  { url: '/',               priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { url: '/about',          priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
+  { url: '/contact',        priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
+  { url: '/news-and-blogs', priority: '0.9', changefreq: 'daily',   lastmod: TODAY },
 ];
 
 export const GET: RequestHandler = async () => {
@@ -18,6 +20,7 @@ export const GET: RequestHandler = async () => {
     url: `/practice-areas/${a.slug}`,
     priority: '0.9',
     changefreq: 'monthly',
+    lastmod: TODAY,
   }));
 
   const postUrls = posts.map(p => ({
@@ -35,8 +38,7 @@ export const GET: RequestHandler = async () => {
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 ${allUrls.map(u => `  <url>
-    <loc>${SITE}${u.url}</loc>
-    ${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}
+    <loc>${SITE}${u.url}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ''}
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`).join('\n')}

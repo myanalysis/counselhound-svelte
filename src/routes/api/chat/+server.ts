@@ -1,9 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { ANTHROPIC_API_KEY } from '$env/static/private';
-import { retrieve } from '$lib/server/retrieval';
 import type { RequestHandler } from './$types';
-
-const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+import { retrieve } from '$lib/server/retrieval';
 
 const BASE_SYSTEM = `You are a helpful legal intake assistant for Counsel Hound, a national attorney matching service. Your job is to help people who have been injured or wronged understand their legal options and connect them with the right attorney — free of charge.
 
@@ -25,44 +21,45 @@ Guidelines:
 - Keep responses short — 2-4 sentences max unless more detail is genuinely needed.
 - Do not discuss topics unrelated to legal matters or Counsel Hound's services.`;
 
-export const POST: RequestHandler = async ({ request }) => {
-  const { messages } = await request.json();
+export const POST: RequestHandler = async ({ request, platform }) => {
+  let messages: any[];
+  try {
+    const body = await request.json();
+    messages = body.messages;
+  } catch {
+    return new Response('Bad request', { status: 400 });
+  }
 
-  // Get the last user message for retrieval
+  if (!messages?.length) {
+    return new Response('No messages', { status: 400 });
+  }
+
+  const ai = platform?.env?.AI;
+  if (!ai) {
+    return new Response('AI unavailable', { status: 503 });
+  }
+
   const lastUser = [...messages].reverse().find((m: any) => m.role === 'user');
   const context = lastUser ? retrieve(lastUser.content, 3) : '';
-
   const system = context
-    ? `${BASE_SYSTEM}\n\n---\nRelevant information from our legal knowledge base — use this to inform your answer:\n\n${context}\n---`
+    ? `${BASE_SYSTEM}\n\n---\nRelevant information from our legal knowledge base:\n\n${context}\n---`
     : BASE_SYSTEM;
 
-  const stream = client.messages.stream({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 1024,
-    system,
-    messages,
-  });
+  try {
+    const response = await ai.run('@cf/meta/llama-3.1-8b-instruct', {
+      messages: [
+        { role: 'system', content: system },
+        ...messages,
+      ],
+      max_tokens: 512,
+    });
 
-  const encoder = new TextEncoder();
-
-  const readable = new ReadableStream({
-    async start(controller) {
-      for await (const chunk of stream) {
-        if (
-          chunk.type === 'content_block_delta' &&
-          chunk.delta.type === 'text_delta'
-        ) {
-          controller.enqueue(encoder.encode(chunk.delta.text));
-        }
-      }
-      controller.close();
-    },
-    cancel() {
-      stream.abort();
-    },
-  });
-
-  return new Response(readable, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-  });
+    const text = response?.response ?? 'Sorry, I could not generate a response.';
+    return new Response(text, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  } catch (e) {
+    console.error('CF AI error:', e);
+    return new Response('Chat unavailable', { status: 502 });
+  }
 };
