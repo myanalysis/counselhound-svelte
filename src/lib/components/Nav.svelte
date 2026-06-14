@@ -128,25 +128,33 @@
     <!-- Desktop nav links — centered -->
     <div class="hidden lg:flex items-center justify-center flex-1 gap-1">
       <a href="/"
-        class="px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white"
-        class:text-[#eed08b]={$page.url.pathname === '/'}>
+        class="relative px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white after:absolute after:bottom-2 after:left-0 after:h-0.5 after:bg-[#eed08b] after:transition-all after:duration-300 hover:text-[#eed08b]"
+        class:text-[#eed08b]={$page.url.pathname === '/'}
+        class:after:w-full={$page.url.pathname === '/'}
+        class:after:w-0={$page.url.pathname !== '/'}>
         {$t.nav_home}
       </a>
       <a href="/about"
-        class="px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white"
-        class:text-[#eed08b]={$page.url.pathname === '/about'}>
+        class="relative px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white after:absolute after:bottom-2 after:left-0 after:h-0.5 after:bg-[#eed08b] after:transition-all after:duration-300 hover:text-[#eed08b] hover:after:w-full"
+        class:text-[#eed08b]={$page.url.pathname === '/about'}
+        class:after:w-full={$page.url.pathname === '/about'}
+        class:after:w-0={$page.url.pathname !== '/about'}>
         {$t.nav_about}
       </a>
       <a href="/contact"
-        class="px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white"
-        class:text-[#eed08b]={$page.url.pathname === '/contact'}>
+        class="relative px-2 py-4 text-[15px] font-medium capitalize transition-colors duration-300 text-white after:absolute after:bottom-2 after:left-0 after:h-0.5 after:bg-[#eed08b] after:transition-all after:duration-300 hover:text-[#eed08b] hover:after:w-full"
+        class:text-[#eed08b]={$page.url.pathname === '/contact'}
+        class:after:w-full={$page.url.pathname === '/contact'}
+        class:after:w-0={$page.url.pathname !== '/contact'}>
         {$t.nav_contact}
       </a>
 
       <!-- Practice Areas — triggers mega menu -->
       <span
-        class="px-2 py-4 text-[15px] font-medium capitalize cursor-pointer transition-colors duration-300 text-white"
+        class="relative px-2 py-4 text-[15px] font-medium capitalize cursor-pointer transition-colors duration-300 text-white after:absolute after:bottom-2 after:left-0 after:h-0.5 after:bg-[#eed08b] after:transition-all after:duration-300 hover:text-[#eed08b] hover:after:w-full"
         class:text-[#eed08b]={megaOpen}
+        class:after:w-full={megaOpen}
+        class:after:w-0={!megaOpen}
         onmouseenter={megaEnter}
         onmouseleave={megaLeave}
         role="button"
@@ -156,7 +164,10 @@
       </span>
 
       <a href="/news-and-blogs"
-        class="px-2 py-4 text-[15px] font-medium capitalize text-white hover:text-[#eed08b] transition-colors duration-300">
+        class="relative px-2 py-4 text-[15px] font-medium capitalize text-white after:absolute after:bottom-2 after:left-0 after:h-0.5 after:bg-[#eed08b] after:transition-all after:duration-300 hover:text-[#eed08b] hover:after:w-full transition-colors duration-300"
+        class:text-[#eed08b]={$page.url.pathname.startsWith('/news-and-blogs')}
+        class:after:w-full={$page.url.pathname.startsWith('/news-and-blogs')}
+        class:after:w-0={!$page.url.pathname.startsWith('/news-and-blogs')}>
         {$t.nav_blog}
       </a>
     </div>

@@ -1,14 +1,9 @@
 <script lang="ts">
-  import type { ActionData } from './$types';
-  let { form }: { form: ActionData } = $props();
+  import type { ActionData, PageData } from './$types';
+  let { form, data }: { form: ActionData; data: PageData } = $props();
 
   let email = $state('');
-  let password = $state('');
-
-  function autofill() {
-    email = 'richard@frankowskifirm.com';
-    password = 'pwd123';
-  }
+  let code = $state('');
 </script>
 
 <svelte:head><title>Admin | Counsel Hound</title></svelte:head>
@@ -20,50 +15,72 @@
       <p class="text-white text-xs uppercase tracking-[0.2em]">Admin Access</p>
     </div>
 
-    <form method="POST" class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <label for="email" class="text-xs uppercase tracking-widest text-white font-futura">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          bind:value={email}
-          placeholder="your@email.com"
-          class="px-4 py-3 text-sm text-[#162d39] bg-white border-2 border-white outline-none focus:border-[#d8b269] transition-colors placeholder-gray-400"
-          autocomplete="email"
-        />
-      </div>
+    {#if !data.verify}
+      <form method="POST" action="?/sendOtp" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-xs uppercase tracking-widest text-white font-futura">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            bind:value={email}
+            placeholder="your@email.com"
+            required
+            class="px-4 py-3 text-sm text-[#162d39] bg-white border-2 border-white outline-none focus:border-[#d8b269] transition-colors placeholder-gray-400"
+            autocomplete="email"
+          />
+        </div>
 
-      <div class="flex flex-col gap-2">
-        <label for="password" class="text-xs uppercase tracking-widest text-white font-futura">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          bind:value={password}
-          placeholder="••••••••"
-          class="px-4 py-3 text-sm text-[#162d39] bg-white border-2 border-white outline-none focus:border-[#d8b269] transition-colors placeholder-gray-400"
-          autocomplete="current-password"
-        />
-      </div>
+        {#if form?.error}
+          <p class="text-red-400 text-sm">{form.error}</p>
+        {/if}
 
-      {#if form?.error}
-        <p class="text-red-400 text-sm">{form.error}</p>
-      {/if}
+        <button
+          type="submit"
+          class="py-3 mt-2 bg-[#d8b269] text-[#162d39] font-bold text-sm uppercase tracking-widest hover:bg-[#c9a058] transition-colors duration-200"
+        >
+          Send Login Code
+        </button>
+      </form>
+    {:else}
+      <form method="POST" action="?/verifyOtp" class="flex flex-col gap-4">
+        <p class="text-white/70 text-sm text-center">Enter the 6-digit code sent to your email.</p>
 
-      <button
-        type="submit"
-        class="py-3 mt-2 bg-[#d8b269] text-[#162d39] font-bold text-sm uppercase tracking-widest hover:bg-[#c9a058] transition-colors duration-200"
-      >
-        Sign In
-      </button>
-      <button
-        type="button"
-        onclick={autofill}
-        class="py-2 text-white/50 text-xs hover:text-white transition-colors"
-      >
-        Autofill credentials
-      </button>
-    </form>
+        <div class="flex flex-col gap-2">
+          <label for="code" class="text-xs uppercase tracking-widest text-white font-futura">Login Code</label>
+          <input
+            id="code"
+            name="code"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]{6}"
+            maxlength="6"
+            bind:value={code}
+            placeholder="000000"
+            required
+            autofocus
+            class="px-4 py-3 text-lg text-[#162d39] bg-white border-2 border-white outline-none focus:border-[#d8b269] transition-colors placeholder-gray-400 tracking-[0.3em] text-center"
+            autocomplete="one-time-code"
+          />
+        </div>
+
+        {#if form?.error}
+          <p class="text-red-400 text-sm">{form.error}</p>
+        {/if}
+
+        <button
+          type="submit"
+          class="py-3 mt-2 bg-[#d8b269] text-[#162d39] font-bold text-sm uppercase tracking-widest hover:bg-[#c9a058] transition-colors duration-200"
+        >
+          Sign In
+        </button>
+        <a
+          href="/admin/login"
+          class="py-2 text-white/50 text-xs hover:text-white transition-colors text-center"
+        >
+          Use a different email
+        </a>
+      </form>
+    {/if}
   </div>
 </div>

@@ -16,7 +16,31 @@
   <meta property="og:url" content="https://counselhound.com/contact" />
   <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta name="twitter:title" content="Contact Us | Counsel Hound" />
-  <meta name="twitter:description" content="Contact Counsel Hound for a free case evaluation. Call, text, or email us." />
+  <meta name="twitter:description" content="Contact Counsel Hound for a free case evaluation. Call, text, or email us. We respond within one business day." />
+  {@html `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "name": "Contact Counsel Hound",
+        "url": "https://counselhound.com/contact",
+        "description": "Contact Counsel Hound for a free case evaluation.",
+        "mainEntity": {
+          "@type": "LegalService",
+          "name": "Counsel Hound",
+          "telephone": "+18558046863",
+          "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "telephone": "+18558046863", "availableLanguage": ["English", "Spanish"] }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://counselhound.com" },
+          { "@type": "ListItem", "position": 2, "name": "Contact Us", "item": "https://counselhound.com/contact" }
+        ]
+      }
+    ]
+  })}</script>`}
 </svelte:head>
 
 <!-- Hero -->

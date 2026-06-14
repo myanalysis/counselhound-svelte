@@ -62,7 +62,7 @@
 </script>
 
 <svelte:head>
-  {@html `<script type="application/ld+json">${faqSchema}</script>`}
+  {@html `<script type="application/ld+json">${faqSchema}<\/script>`}
 </svelte:head>
 
 <section bind:this={el} class="py-12 px-6 bg-[#152232]">

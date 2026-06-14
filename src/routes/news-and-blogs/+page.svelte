@@ -39,6 +39,27 @@
   <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta name="twitter:title" content="Legal News & Blogs | Counsel Hound" />
   <meta name="twitter:description" content="Stay informed with the latest legal news, case updates, and insights from the Counsel Hound team." />
+  {#if data.page === 1}
+  {@html `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "name": "Legal News & Blogs",
+        "url": "https://counselhound.com/news-and-blogs",
+        "description": "Stay informed with the latest legal news, case updates, and insights from the Counsel Hound team.",
+        "publisher": { "@type": "LegalService", "name": "Counsel Hound", "url": "https://counselhound.com" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://counselhound.com" },
+          { "@type": "ListItem", "position": 2, "name": "Legal News & Blogs", "item": "https://counselhound.com/news-and-blogs" }
+        ]
+      }
+    ]
+  })}</script>`}
+  {/if}
 </svelte:head>
 
 <!-- Hero -->

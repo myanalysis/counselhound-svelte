@@ -1,20 +1,31 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { sendLeadEmail } from '$lib/server/mailer';
+import { z } from 'zod';
+
+const schema = z.object({
+  name:     z.string().min(2, 'Name is required').max(200).trim(),
+  email:    z.email('Valid email required').max(200).trim().toLowerCase(),
+  phone:    z.string().max(50).trim(),
+  caseType: z.string().max(200).trim(),
+  message:  z.string().min(10, 'Please describe your situation').max(5000).trim(),
+  honeypot: z.string().max(0),
+});
 
 export const actions: Actions = {
   default: async ({ request }) => {
     const fd = await request.formData();
-    const honeypot = fd.get('honeypot') as string;
-    if (honeypot) return fail(400, { error: 'Bot detected.' });
+    const raw = Object.fromEntries(fd);
 
-    const name     = (fd.get('name') as string)?.trim();
-    const email    = (fd.get('email') as string)?.trim();
-    const phone    = (fd.get('phone') as string)?.trim() || '';
-    const caseType = (fd.get('caseType') as string)?.trim() || '';
-    const message  = (fd.get('message') as string)?.trim();
+    if (raw.honeypot) return { success: true };
 
-    if (!name || !email || !message) return fail(400, { error: 'Please fill in all required fields.' });
+    const parsed = schema.safeParse(raw);
+    if (!parsed.success) {
+      const first = parsed.error.issues[0];
+      return fail(422, { error: first.message });
+    }
+
+    const { name, email, phone, caseType, message } = parsed.data;
 
     try {
       await sendLeadEmail({ name, email, phone, caseType, message });

@@ -11,16 +11,37 @@
 </script>
 
 <svelte:head>
-  <title>About Us | Counsel Hound</title>
-  <meta name="description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States." />
+  <title>About Counsel Hound | Richard Frankowski's Vetted Attorney Network</title>
+  <meta name="description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States. Free matching service — no fees unless you win." />
+  <meta name="keywords" content="Richard Frankowski attorney, Counsel Hound about, vetted injury attorneys, attorney matching service, free legal help, personal injury network" />
   <link rel="canonical" href="https://counselhound.com/about" />
-  <meta property="og:title" content="About Us | Counsel Hound" />
+  <meta property="og:title" content="About Counsel Hound | Richard Frankowski's Vetted Attorney Network" />
   <meta property="og:description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://counselhound.com/about" />
   <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
-  <meta name="twitter:title" content="About Us | Counsel Hound" />
+  <meta name="twitter:title" content="About Counsel Hound | Richard Frankowski's Vetted Attorney Network" />
   <meta name="twitter:description" content="Learn about Richard Frankowski and the Counsel Hound network of vetted personal injury attorneys across the United States." />
+  {@html `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "Richard Frankowski",
+        "jobTitle": "CEO & Founder",
+        "worksFor": { "@type": "LegalService", "name": "Counsel Hound", "url": "https://counselhound.com" },
+        "url": "https://counselhound.com/about",
+        "sameAs": ["https://www.linkedin.com/in/richardfrankowski"]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://counselhound.com" },
+          { "@type": "ListItem", "position": 2, "name": "About Us", "item": "https://counselhound.com/about" }
+        ]
+      }
+    ]
+  })}</script>`}
 </svelte:head>
 
 <!-- Hero -->

@@ -1,42 +1,52 @@
-# sv
+# Counsel Hound — Website Guide
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Your website is live at **counselhound.com**.
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Logging In to Admin
 
-```sh
-# create a new project
-npx sv create my-app
-```
+1. Go to **counselhound.com/admin/login**
+2. Enter your email address
+3. Check your email — you will receive a 6-digit code
+4. Enter the code to sign in
 
-To recreate this project with the same configuration:
+Your session stays active for 8 hours. After that, you will need to sign in again.
 
-```sh
-# recreate this project
-pnpm dlx sv@0.13.0 create --template minimal --types ts --add tailwindcss="plugins:typography,forms" --install pnpm counselhound-svelte
-```
+**Admin email addresses:**
+- richard@counselhound.com
+- diogenes@mac.com
 
-## Developing
+---
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## What You Can Do in Admin
 
-```sh
-npm run dev
+- **View blog posts** — see all published articles
+- **Write new posts** — add articles to your News & Blogs section
+- **Edit existing posts** — update content at any time
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+---
 
-## Building
+## Your Pages
 
-To create a production version of your app:
+| Page | Address |
+|---|---|
+| Home | counselhound.com |
+| About | counselhound.com/about |
+| Contact | counselhound.com/contact |
+| Blog | counselhound.com/news-and-blogs |
+| Consumer Safety | counselhound.com/counsel-hound-consumer-safety |
+| Medical Safety | counselhound.com/counsel-hound-medical-safety |
+| Admin | counselhound.com/admin |
 
-```sh
-npm run build
-```
+---
 
-You can preview the production build with `npm run preview`.
+## Contact Form Leads
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Every contact form submission is emailed to **richard@counselhound.com**. Nothing is lost — if you do not see it in your inbox, check spam.
+
+---
+
+## Questions or Issues
+
+Contact Benson at **diogenes@mac.com**.

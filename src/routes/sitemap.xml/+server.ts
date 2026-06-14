@@ -7,10 +7,12 @@ const SITE = 'https://counselhound.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
 const STATIC_PAGES = [
-  { url: '/',               priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
-  { url: '/about',          priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
-  { url: '/contact',        priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
-  { url: '/news-and-blogs', priority: '0.9', changefreq: 'daily',   lastmod: TODAY },
+  { url: '/',                                   priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { url: '/about',                              priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
+  { url: '/contact',                            priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
+  { url: '/news-and-blogs',                     priority: '0.9', changefreq: 'daily',   lastmod: TODAY },
+  { url: '/counsel-hound-consumer-safety',      priority: '0.8', changefreq: 'daily',   lastmod: TODAY },
+  { url: '/counsel-hound-medical-safety',       priority: '0.8', changefreq: 'daily',   lastmod: TODAY },
 ];
 
 export const GET: RequestHandler = async () => {

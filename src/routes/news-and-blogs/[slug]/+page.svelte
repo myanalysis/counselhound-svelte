@@ -21,11 +21,14 @@
   <meta property="og:description" content={post.excerpt} />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://counselhound.com/news-and-blogs/{post.slug}" />
-  <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
+  <meta property="og:image" content={post.featured_image ? `https://counselhound.com${post.featured_image}` : 'https://counselhound.com/og-default.jpg'} />
+  <meta property="og:image:alt" content={post.title} />
   <meta property="article:published_time" content={post.created_at} />
   <meta property="article:modified_time" content={post.updated_at ?? post.created_at} />
   <meta property="article:author" content="Counsel Hound" />
   <meta property="article:section" content={post.category} />
+  {#each (post.tags ?? []) as tag}<meta property="article:tag" content={tag} />{/each}
+  <meta name="keywords" content={[post.category, ...(post.tags ?? [])].join(', ')} />
   <meta name="twitter:title" content="{post.title} | Counsel Hound" />
   <meta name="twitter:description" content={post.excerpt} />
   {@html `<script type="application/ld+json">${JSON.stringify([
@@ -34,7 +37,7 @@
       "@type": "Article",
       "headline": post.title,
       "description": post.excerpt,
-      "image": "https://counselhound.com/og-default.jpg",
+      "image": post.featured_image ? `https://counselhound.com${post.featured_image}` : "https://counselhound.com/og-default.jpg",
       "datePublished": post.created_at,
       "dateModified": post.updated_at ?? post.created_at,
       "author": { "@type": "Organization", "name": "Counsel Hound", "url": "https://counselhound.com" },

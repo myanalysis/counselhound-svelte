@@ -21,13 +21,16 @@
   <title>Counsel Hound | Serious Results for Serious Injuries</title>
   <meta name="description" content="Counsel Hound connects you with trusted, vetted attorneys for personal injury, abuse litigation, consumer fraud, defective products, and more — free of charge." />
   <link rel="canonical" href="https://counselhound.com" />
-<meta property="og:title" content="Counsel Hound | Serious Results for Serious Injuries" />
+  <meta property="og:title" content="Counsel Hound | Serious Results for Serious Injuries" />
   <meta property="og:description" content="Free attorney matching. No fees until we win. Call +1-855-804-6863." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://counselhound.com" />
   <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
+  <meta property="og:image:secure_url" content="https://counselhound.com/og-default.jpg" />
+  <meta property="og:image:alt" content="Counsel Hound — Serious Results for Serious Injuries" />
   <meta name="twitter:title" content="Counsel Hound | Serious Results for Serious Injuries" />
   <meta name="twitter:description" content="Free attorney matching. No fees until we win. Call +1-855-804-6863." />
+  <meta name="keywords" content="personal injury attorney, find a lawyer, free legal consultation, attorney matching service, injury lawyer, accident attorney, defective products lawyer, abuse litigation, medical malpractice attorney, toxic torts, whistleblower attorney, consumer fraud lawyer, no win no fee, contingency fee attorney" />
 </svelte:head>
 
 <Hero />

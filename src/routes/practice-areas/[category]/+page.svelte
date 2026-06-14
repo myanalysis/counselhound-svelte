@@ -22,14 +22,26 @@
     <meta property="og:image" content="https://counselhound.com{area.ogImage ?? '/og-default.jpg'}" />
     <meta name="twitter:title" content="{area.label} | Counsel Hound" />
     <meta name="twitter:description" content={area.intro} />
+    <meta name="keywords" content="{area.label}, {area.subs.map(s => s.name).join(', ')}, injury attorney, free consultation, contingency fee lawyer" />
     {@html `<script type="application/ld+json">${JSON.stringify([
       {
         "@context": "https://schema.org",
         "@type": "Service",
         "name": area.label,
+        "serviceType": area.label,
         "description": area.intro,
         "provider": { "@type": "LegalService", "name": "Counsel Hound", "url": "https://counselhound.com" },
-        "url": `https://counselhound.com/practice-areas/${area.slug}`
+        "areaServed": { "@type": "Country", "name": "United States" },
+        "url": `https://counselhound.com/practice-areas/${area.slug}`,
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": `${area.label} Legal Services`,
+          "itemListElement": area.subs.map((s, i) => ({
+            "@type": "Offer",
+            "position": i + 1,
+            "itemOffered": { "@type": "Service", "name": s.name, "description": s.desc }
+          }))
+        }
       },
       {
         "@context": "https://schema.org",
@@ -39,8 +51,17 @@
           { "@type": "ListItem", "position": 2, "name": "Practice Areas", "item": "https://counselhound.com/practice-areas" },
           { "@type": "ListItem", "position": 3, "name": area.label, "item": `https://counselhound.com/practice-areas/${area.slug}` },
         ]
-      }
-    ])}</script>`}
+      },
+      ...(area.faqs?.length ? [{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": area.faqs.map(f => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }] : [])
+    ])}<\/script>`}
   {/if}
 </svelte:head>
 
