@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { t } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
   let el: HTMLElement;
   let visible = $state(false);
 
@@ -22,16 +22,16 @@
       class:opacity-0={!visible} class:translate-y-6={!visible}
       class:opacity-100={visible} class:translate-y-0={visible}
     >
-      <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3">{$t.whyus_label}</p>
-      <h2 class="text-4xl font-bold text-white mb-6 font-playfair">{$t.whyus_h2}</h2>
+      <p class="text-[#d8b269] text-xs uppercase tracking-[0.2em] mb-3">{i18n.t.whyUs.label}</p>
+      <h2 class="text-4xl font-bold text-white mb-6 font-playfair">{i18n.t.whyUs.h2}</h2>
       <p class="text-white/60 text-lg leading-relaxed">
-        {$t.whyus_body}
+        {i18n.t.whyUs.body}
       </p>
     </div>
 
     <!-- Stats row — no boxes, just big numbers + dividers -->
     <div class="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
-      {#each $t.whyus_stats as s, i}
+      {#each i18n.t.whyUs.stats as s, i}
         <div
           class="px-8 first:pl-0 last:pr-0 transition-all duration-700"
           class:opacity-0={!visible} class:translate-y-4={!visible}

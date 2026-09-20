@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { t } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
   let el: HTMLElement;
   let visible = $state(false);
   let videoOpen = $state(false);
@@ -51,20 +51,25 @@
     <!-- Text right -->
     <div>
       <h2 class="text-3xl font-bold text-black mb-4 font-futura">
-        {$t.founder_h2}
+        {i18n.t.founder.h2}
       </h2>
       <p class="text-gray-500 text-lg leading-relaxed mb-4">
-        {$t.founder_p1}
+        {i18n.t.founder.p1}
       </p>
       <p class="text-gray-500 text-lg leading-relaxed mb-8">
-        {$t.founder_p2}
+        {i18n.t.founder.p2}
       </p>
-      <a
-        href="/about"
-        class="inline-block px-10 py-4 bg-[#162d39] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#1e3a4a] transition-colors duration-200"
-      >
-        {$t.founder_cta}
-      </a>
+      <div class="flex items-center gap-6 flex-wrap">
+        <a
+          href={i18n.href('/about')}
+          class="inline-block px-10 py-4 bg-[#162d39] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#1e3a4a] transition-colors duration-200"
+        >
+          {i18n.t.founder.cta}
+        </a>
+        <a href={i18n.href('/videos')} class="text-xs font-bold uppercase tracking-widest text-[#d8b269] hover:brightness-110 transition-all">
+          {i18n.t.founder.viewAllVideos}
+        </a>
+      </div>
     </div>
   </div>
 
@@ -100,11 +105,17 @@
         onclick={() => videoOpen = false}
         class="absolute -top-10 right-0 text-white text-sm uppercase tracking-widest hover:text-[#d8b269] transition-colors"
       >
-        {$t.founder_close} ✕
+        {i18n.t.founder.close} ✕
       </button>
-      <div class="w-full h-full flex items-center justify-center text-white/40 text-sm uppercase tracking-widest">
-        {$t.founder_video_soon}
-      </div>
+      <iframe
+        src="https://www.youtube.com/embed/EMRvinK5M-o?autoplay=1&rel=0"
+        title="Why I Started Counsel Hound — Richard Frankowski"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
     </div>
   </div>
 {/if}

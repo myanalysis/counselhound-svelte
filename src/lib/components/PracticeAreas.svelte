@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ConsultationModal from '$lib/components/ConsultationModal.svelte';
-  import { t, lang } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
   let el: HTMLElement;
   let visible = $state(false);
   let modalOpen = $state(false);
@@ -14,16 +14,19 @@
     return () => obs.disconnect();
   });
 
-  const areas = [
-    { label: 'Abuse Litigation',        labelEs: 'Litigios de Abuso',         img: '/pa-abuse.webp' },
-    { label: 'Personal Injury',          labelEs: 'Lesiones Personales',        img: '/pa-personal-injury.webp' },
-    { label: 'Consumer Fraud',           labelEs: 'Fraude al Consumidor',       img: '/pa-consumer-fraud.webp' },
-    { label: 'Defective Products',       labelEs: 'Productos Defectuosos',      img: '/pa-defective-products.webp' },
-    { label: 'Medical Injury',           labelEs: 'Lesiones Médicas',           img: '/pa-medical.webp' },
-    { label: 'Toxic Torts',              labelEs: 'Daños por Tóxicos',          img: '/pa-toxic.webp' },
-    { label: 'Whistleblower Protection', labelEs: 'Protección a Denunciantes',  img: '/pa-whistleblower.webp' },
-    { label: 'Investment Fraud',         labelEs: 'Fraude de Inversión',        img: '/bg-capitol.webp' },
-  ];
+  const images: Record<string, string> = {
+    'abuse-litigation': '/pa-abuse.webp',
+    'personal-injury': '/pa-personal-injury.webp',
+    'consumer-fraud': '/pa-consumer-fraud.webp',
+    'defective-products': '/pa-defective-products.webp',
+    'medical-injury': '/pa-medical.webp',
+    'toxic-torts': '/pa-toxic.webp',
+    'whistleblower-protection': '/pa-whistleblower.webp',
+  };
+  const areas = $derived([
+    ...i18n.t.practice.areas.map((a) => ({ label: a.label, slug: a.slug, img: images[a.slug] })),
+    { label: i18n.t.nav.investmentFraud.label, slug: null, img: '/bg-capitol.webp' },
+  ]);
 </script>
 
 <section bind:this={el} class="py-12 px-6 bg-white">
@@ -36,7 +39,7 @@
   >
     <h2 class="text-4xl font-bold text-black mb-10 relative pb-4 text-center font-playfair
       after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-30 after:h-0.5 after:bg-[#EBC24F]">
-      {$t.pa_h2}
+      {i18n.t.practiceGrid.h2}
     </h2>
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -47,7 +50,7 @@
         >
           <img
             src={area.img}
-            alt={$lang === 'es' ? area.labelEs : area.label}
+            alt={area.label}
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="400"
             height="256"
@@ -60,10 +63,10 @@
 
           <div class="absolute bottom-0 left-0 right-0 p-4">
             <h3 class="text-white font-bold text-lg leading-tight font-futura mb-3 group-hover:text-[#f5da98] transition-colors duration-300">
-              {$lang === 'es' ? area.labelEs : area.label}
+              {area.label}
             </h3>
             <span class="inline-block text-xs font-semibold uppercase tracking-widest px-4 py-2 border border-[#d8b269] text-[#d8b269] rounded group-hover:bg-[#d8b269] group-hover:text-black transition-all duration-300">
-              {$t.pa_cta_card}
+              {i18n.t.practiceGrid.ctaCard}
             </span>
           </div>
         </button>

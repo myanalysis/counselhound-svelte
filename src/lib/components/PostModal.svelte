@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { i18n } from '$lib/i18n/index.svelte';
 
   let { post, onclose }: { post: any; onclose: () => void } = $props();
 
@@ -45,7 +46,7 @@
           </svg>
           {likes}
         </button>
-        <button type="button" onclick={onclose} class="text-gray-400 hover:text-black transition-colors" aria-label="Close">
+        <button type="button" onclick={onclose} class="text-gray-400 hover:text-black transition-colors" aria-label={i18n.t.postModal.close}>
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -70,10 +71,10 @@
     <!-- Footer -->
     <div class="px-8 py-5 border-t border-gray-100 flex items-center justify-between">
       <button type="button" onclick={onclose} class="text-sm text-gray-400 hover:text-black transition-colors">
-        &larr; Back
+        {i18n.t.postModal.back}
       </button>
-      <a href="/contact" onclick={onclose} class="inline-block px-8 py-3 bg-[#162d39] text-white text-sm font-semibold uppercase tracking-widest hover:bg-[#1e3a4a] transition-colors duration-200">
-        Free Consultation
+      <a href={i18n.href('/contact')} onclick={onclose} class="inline-block px-8 py-3 bg-[#162d39] text-white text-sm font-semibold uppercase tracking-widest hover:bg-[#1e3a4a] transition-colors duration-200">
+        {i18n.t.postModal.freeConsultation}
       </a>
     </div>
 

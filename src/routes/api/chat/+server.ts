@@ -1,4 +1,5 @@
 import type { RequestHandler } from './$types';
+import Anthropic from '@anthropic-ai/sdk';
 import { retrieve } from '$lib/server/retrieval';
 
 const BASE_SYSTEM = `You are a helpful legal intake assistant for Counsel Hound, a national attorney matching service. Your job is to help people who have been injured or wronged understand their legal options and connect them with the right attorney — free of charge.
@@ -34,8 +35,8 @@ export const POST: RequestHandler = async ({ request, platform }) => {
     return new Response('No messages', { status: 400 });
   }
 
-  const ai = platform?.env?.AI;
-  if (!ai) {
+  const apiKey = platform?.env?.ANTHROPIC_API_KEY;
+  if (!apiKey) {
     return new Response('AI unavailable', { status: 503 });
   }
 
@@ -46,20 +47,20 @@ export const POST: RequestHandler = async ({ request, platform }) => {
     : BASE_SYSTEM;
 
   try {
-    const response = await ai.run('@cf/meta/llama-3.1-8b-instruct', {
-      messages: [
-        { role: 'system', content: system },
-        ...messages,
-      ],
+    const anthropic = new Anthropic({ apiKey });
+    const response = await anthropic.messages.create({
+      model: 'claude-haiku-4-5',
       max_tokens: 512,
+      system,
+      messages: messages.map((m: any) => ({ role: m.role, content: m.content })),
     });
 
-    const text = response?.response ?? 'Sorry, I could not generate a response.';
+    const text = response.content.find((b) => b.type === 'text')?.text ?? 'Sorry, I could not generate a response.';
     return new Response(text, {
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     });
   } catch (e) {
-    console.error('CF AI error:', e);
+    console.error('Anthropic API error:', e);
     return new Response('Chat unavailable', { status: 502 });
   }
 };

@@ -16,7 +16,7 @@
     </div>
 
     {#if !data.verify}
-      <form method="POST" action="?/sendOtp" class="flex flex-col gap-4">
+      <form method="POST" action="?/sendOtp" novalidate class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label for="email" class="text-xs uppercase tracking-widest text-white font-futura">Email</label>
           <input
@@ -43,7 +43,7 @@
         </button>
       </form>
     {:else}
-      <form method="POST" action="?/verifyOtp" class="flex flex-col gap-4">
+      <form method="POST" action="?/verifyOtp" novalidate class="flex flex-col gap-4">
         <p class="text-white/70 text-sm text-center">Enter the 6-digit code sent to your email.</p>
 
         <div class="flex flex-col gap-2">
@@ -74,12 +74,12 @@
         >
           Sign In
         </button>
-        <a
-          href="/admin/login"
-          class="py-2 text-white/50 text-xs hover:text-white transition-colors text-center"
-        >
+      </form>
+      <form method="POST" action="?/clearOtp" class="mt-2">
+        <button type="submit"
+          class="w-full py-2 text-white/50 text-xs hover:text-white transition-colors bg-transparent border-none cursor-pointer">
           Use a different email
-        </a>
+        </button>
       </form>
     {/if}
   </div>

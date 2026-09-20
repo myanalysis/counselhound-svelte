@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick, onMount } from 'svelte';
-  import { t } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
 
   type Message = { role: 'user' | 'assistant'; content: string };
 
@@ -12,7 +12,7 @@
   // Reactive initial greeting based on language
   $effect(() => {
     if (messages.length === 0) {
-      messages = [{ role: 'assistant', content: $t.chat_greeting }];
+      messages = [{ role: 'assistant', content: i18n.t.chat.greeting }];
     }
   });
 
@@ -54,7 +54,7 @@
       await scrollToBottom();
     } catch {
       // Replace empty placeholder with error message
-      messages = [...messages.slice(0, -1), { role: 'assistant', content: $t.chat_error }];
+      messages = [...messages.slice(0, -1), { role: 'assistant', content: i18n.t.chat.error }];
     } finally {
       loading = false;
       await scrollToBottom();
@@ -98,19 +98,19 @@
   type="button"
   onclick={() => open = !open}
   data-chat-bubble
-  class="fixed bottom-6 right-6 z-999998 w-14 h-14 rounded-full bg-[#C9A84C] shadow-xl flex items-center justify-center hover:brightness-110 transition-all duration-200"
-  aria-label={$t.chat_aria_label}
+  class="fixed bottom-6 right-6 z-999998 w-14 h-14 rounded-full bg-[#d8b269] shadow-xl flex items-center justify-center hover:brightness-110 transition-all duration-200"
+  aria-label={i18n.t.chat.ariaLabel}
 >
   {#if open}
-    <svg class="w-5 h-5 text-[#0D1B2A]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <svg class="w-5 h-5 text-[#162d39]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
     </svg>
   {:else}
-    <svg class="w-6 h-6 text-[#0D1B2A]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+    <svg class="w-6 h-6 text-[#162d39]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/>
     </svg>
     <!-- Pulse ring -->
-    <span class="absolute w-14 h-14 rounded-full bg-[#C9A84C]/50 animate-ping"></span>
+    <span class="absolute w-14 h-14 rounded-full bg-[#d8b269]/50 animate-ping"></span>
   {/if}
 </button>
 
@@ -128,11 +128,11 @@
       </div>
       <div>
         <p class="text-white text-sm font-bold leading-none">Counsel Hound</p>
-        <p class="text-[#d8b269] text-[11px] uppercase tracking-wider mt-0.5">{$t.chat_header_sub}</p>
+        <p class="text-[#d8b269] text-[11px] uppercase tracking-wider mt-0.5">{i18n.t.chat.headerSub}</p>
       </div>
       <div class="ml-auto flex items-center gap-1.5">
         <span class="w-2 h-2 rounded-full bg-green-400"></span>
-        <span class="text-white/60 text-[11px]">{$t.chat_online}</span>
+        <span class="text-white/60 text-[11px]">{i18n.t.chat.online}</span>
       </div>
     </div>
 
@@ -163,7 +163,7 @@
       <textarea
         bind:value={input}
         onkeydown={handleKey}
-        placeholder={$t.chat_placeholder}
+        placeholder={i18n.t.chat.placeholder}
         rows="1"
         disabled={loading}
         class="flex-1 resize-none px-3 py-2 text-sm border border-gray-200 outline-none focus:border-[#162d39] transition-colors bg-white disabled:opacity-50"
@@ -174,14 +174,14 @@
         disabled={loading || !input.trim()}
         class="px-4 py-2 bg-[#162d39] text-white text-sm font-semibold hover:bg-[#1e3a4a] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
       >
-        {$t.chat_send}
+        {i18n.t.chat.send}
       </button>
     </div>
 
     <!-- Footer nudge -->
     <div class="px-4 py-2 bg-white border-t border-gray-100 text-center shrink-0">
       <a href="tel:+18558046863" class="text-[11px] text-[#162d39] font-semibold hover:text-[#d8b269] transition-colors uppercase tracking-wider">
-        {$t.chat_call_cta}
+        {i18n.t.chat.callCta}
       </a>
     </div>
   </div>

@@ -3,28 +3,59 @@
   import favicon from '$lib/assets/favicon.svg';
   import Nav from '$lib/components/Nav.svelte';
   import Footer from '$lib/components/Footer.svelte';
+  import LangToggle from '$lib/components/LangToggle.svelte';
+  import ScrollTop from '$lib/components/ScrollTop.svelte';
   import { page } from '$app/state';
-  import { lang } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
+  import { onMount } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
+  import { env } from '$env/dynamic/public';
+  import { initGA, trackPageView } from '$lib/analytics';
 
   let { children } = $props();
 
   const isAdmin = $derived(page.url.pathname.startsWith('/admin'));
+  const isError = $derived(!!page.error);
+
+  const GA_ID = env.PUBLIC_GA_ID ?? '';
+
+  // GA4 — no-ops entirely if PUBLIC_GA_ID isn't set
+  onMount(() => {
+    if (!GA_ID) return;
+    initGA(GA_ID);
+    trackPageView(page.url.pathname, document.title);
+  });
+
+  afterNavigate(() => {
+    if (!GA_ID) return;
+    trackPageView(page.url.pathname, document.title);
+  });
 </script>
 
 <svelte:head>
-  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  {#if isAdmin}
+    <meta name="robots" content="noindex,nofollow" />
+  {:else}
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  {/if}
   <meta name="author" content="Richard S. Frankowski, Esq." />
-  <meta name="theme-color" content="#0D1B2A" />
+  <meta name="theme-color" content="#162d39" />
   <meta name="color-scheme" content="light" />
   <link rel="icon" type="image/svg+xml" href={favicon} />
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
   <link rel="preload" as="font" href="/fonts/playfair-display.woff2" type="font/woff2" crossorigin="anonymous" />
   <link rel="preload" as="font" href="/fonts/futuraboldcondensedbt.woff2" type="font/woff2" crossorigin="anonymous" />
+  {#if !isAdmin}
+    <link rel="alternate" hreflang="en-US" href="https://counselhound.com{i18n.altHref('en')}" />
+    <link rel="alternate" hreflang="es-US" href="https://counselhound.com{i18n.altHref('es')}" />
+    <link rel="alternate" hreflang="x-default" href="https://counselhound.com{i18n.altHref('en')}" />
+  {/if}
   <!-- Default OG / Twitter fallbacks (individual pages override these) -->
   <meta property="og:site_name" content="Counsel Hound" />
-  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale" content={i18n.lang === 'es' ? 'es_US' : 'en_US'} />
   <meta property="og:image" content="https://counselhound.com/og-default.jpg" />
   <meta property="og:image:secure_url" content="https://counselhound.com/og-default.jpg" />
   <meta property="og:image:width" content="1200" />
@@ -69,6 +100,7 @@
         "contactPoint": { "@type": "ContactPoint", "url": "https://counselhound.com/contact", "contactType": "customer service" },
         "openingHours": ["Mo-Fr 09:00-17:00"],
         "hasMap": "https://maps.google.com/?q=231+22nd+St+S+%23203+Birmingham+AL+35233",
+        "geo": { "@type": "GeoCoordinates", "latitude": 33.5100, "longitude": -86.8050 },
         "address": [
           { "@type": "PostalAddress", "streetAddress": "231 22nd St S #203", "addressLocality": "Birmingham", "addressRegion": "AL", "postalCode": "35233", "addressCountry": "US" },
           { "@type": "PostalAddress", "streetAddress": "201 S Biscayne Blvd #8910", "addressLocality": "Miami", "addressRegion": "FL", "postalCode": "33131", "addressCountry": "US" },
@@ -77,12 +109,6 @@
         "areaServed": { "@type": "Country", "name": "United States" },
         "priceRange": "Free — Contingency Fee",
         "founder": { "@id": "https://counselhound.com/#founder" },
-        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "3", "bestRating": "5", "worstRating": "1" },
-        "review": [
-          { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "author": { "@type": "Person", "name": "Sarah M." }, "reviewBody": "Counsel Hound connected me with an attorney who truly understood my case. The process was seamless and stress-free.", "datePublished": "2024-03-01" },
-          { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "author": { "@type": "Person", "name": "James R." }, "reviewBody": "Within 24 hours I was speaking with a lawyer who fought for me and won.", "datePublished": "2024-01-01" },
-          { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "author": { "@type": "Person", "name": "Linda T." }, "reviewBody": "The team at Counsel Hound made me feel like I had a friend in my corner. They matched me perfectly.", "datePublished": "2024-02-01" }
-        ],
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
           "name": "Legal Practice Areas",
@@ -143,7 +169,7 @@
   })}<\/script>`}
 </svelte:head>
 
-{#if isAdmin}
+{#if isAdmin || isError}
   {@render children()}
 {:else}
   <Nav />
@@ -151,4 +177,6 @@
     {@render children()}
   </main>
   <Footer />
+  <LangToggle />
+  <ScrollTop />
 {/if}

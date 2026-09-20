@@ -1,19 +1,12 @@
 <script lang="ts">
-  import { lang } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
 
-  const results = [
-    { label: 'Georgia Opioid Settlement',                  labelEs: 'Acuerdo Opioides Georgia',               amount: 'Over $1B over the next 18 years' },
-    { label: 'Opioid Abuse Litigation',                    labelEs: 'Litigio de Abuso de Opioides',           amount: '$728M for Alabama' },
-    { label: 'Mississippi Opioid Settlement',              labelEs: 'Acuerdo Opioides Mississippi',           amount: '$370 Million' },
-    { label: 'Blue Cross Blue Shield Provider Settlement', labelEs: 'Acuerdo Blue Cross Blue Shield',         amount: '$2.67B Settlement Fund' },
-    { label: 'Consumer Fraud',                             labelEs: 'Fraude al Consumidor',                   amount: '$5 Million' },
-    { label: 'Defective Products',                         labelEs: 'Productos Defectuosos',                  amount: '$3 Million' },
-    { label: 'Medical Injury',                             labelEs: 'Lesiones Médicas',                       amount: '$1 Million' },
-    { label: 'Personal Injury',                            labelEs: 'Lesiones Personales',                    amount: '$3 Million' },
-    { label: 'Abuse Litigation',                           labelEs: 'Litigios de Abuso',                      amount: '$1 Million' },
-    { label: 'Personal Injury',                            labelEs: 'Lesiones Personales',                    amount: '$4 Million' },
-  ];
-  const doubled = [...results, ...results];
+  type CaseResult = { amount: string; description: string; category: string };
+
+  let { caseResults = [] }: { caseResults: CaseResult[] } = $props();
+
+  const items = $derived(caseResults.length > 0 ? caseResults : i18n.t.ticker.fallback);
+  const doubled = $derived([...items, ...items]);
 </script>
 
 <!-- Dark navy bg, gold top/bottom border — matches .million_slider -->
@@ -24,7 +17,7 @@
         class:border-l={i !== 0}
         style={i !== 0 ? 'border-color: rgba(255,255,255,0.2);' : ''}>
         <p class="text-[10px] font-black uppercase tracking-[2px] mb-2 bg-linear-to-r from-[#ffe3b3] to-[#b78a2b] bg-clip-text text-transparent">
-          {$lang === 'es' ? r.labelEs : r.label}
+          {r.category}
         </p>
         <p class="text-base font-black uppercase text-white">
           {r.amount}

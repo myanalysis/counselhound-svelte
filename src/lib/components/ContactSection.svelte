@@ -2,7 +2,8 @@
   import { onMount } from 'svelte';
   import { enhance } from '$app/forms';
   import { config } from '$lib/config';
-  import { t, lang } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
+  import { en } from '$lib/i18n/en';
   import ObfuscatedEmail from '$lib/components/ObfuscatedEmail.svelte';
 
   let el: HTMLElement;
@@ -10,47 +11,6 @@
   let submitting = $state(false);
   let submitted = $state(false);
   let error = $state('');
-
-  type Location = { city: string; addr: string; mapUrl: string; embedUrl: string };
-  let mapOpen = $state(false);
-  let activeLocation = $state<Location | null>(null);
-
-  const locations: Location[] = [
-    {
-      city: 'Birmingham, AL',
-      addr: '231 22nd St S #203, Birmingham AL 35233',
-      mapUrl: 'https://www.openstreetmap.org/search?query=231+22nd+St+S+Birmingham+AL+35233',
-      embedUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=-86.8150%2C33.5050%2C-86.7950%2C33.5150&layer=mapnik&marker=33.5100%2C-86.8050',
-    },
-    {
-      city: 'Miami, FL',
-      addr: '201 S Biscayne Blvd #8910, Miami FL 33131',
-      mapUrl: 'https://www.openstreetmap.org/search?query=201+S+Biscayne+Blvd+Miami+FL+33131',
-      embedUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=-80.1950%2C25.7650%2C-80.1750%2C25.7750&layer=mapnik&marker=25.7700%2C-80.1850',
-    },
-    {
-      city: 'Houston, TX',
-      addr: '12 Greenway Plz #1100, Houston TX 77027',
-      mapUrl: 'https://www.openstreetmap.org/search?query=12+Greenway+Plaza+Houston+TX+77027',
-      embedUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=-95.4650%2C29.7450%2C-95.4450%2C29.7550&layer=mapnik&marker=29.7500%2C-95.4550',
-    },
-  ];
-
-  function openMap(loc: Location) {
-    activeLocation = loc;
-    mapOpen = true;
-  }
-
-  function closeMap() {
-    mapOpen = false;
-    activeLocation = null;
-  }
-
-  onMount(() => {
-    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') closeMap(); }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  });
 
   onMount(() => {
     const obs = new IntersectionObserver(([e]) => {
@@ -60,17 +20,26 @@
     return () => obs.disconnect();
   });
 
-  const caseTypesEn = [
-    'Abuse Litigation', 'Personal Injury', 'Consumer Fraud', 'Defective Products',
-    'Medical Injury', 'Toxic Torts', 'Whistleblower', 'Investment Fraud', 'Other',
-  ];
-  const caseTypesEs = [
-    'Litigios de Abuso', 'Lesiones Personales', 'Fraude al Consumidor', 'Productos Defectuosos',
-    'Lesiones Médicas', 'Daños por Tóxicos', 'Denunciante', 'Fraude de Inversión', 'Otro',
-  ];
+  // Submitted value is always the canonical English case-type label, regardless of
+  // display language, so the admin backend gets a consistent value.
+  const caseTypesEn = en.contact.caseTypes;
+
+  function formatPhone(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '').slice(0, 10);
+    let formatted = '';
+    if (digits.length <= 3) {
+      formatted = digits;
+    } else if (digits.length <= 6) {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    } else {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    }
+    input.value = formatted;
+  }
 </script>
 
-<section bind:this={el} id="contact" class="pt-20 pb-10 px-6 bg-white">
+<section bind:this={el} id="contact" class="pt-20 pb-16 px-6 bg-white">
   <div class="max-w-6xl mx-auto">
 
     <div class="grid lg:grid-cols-2 gap-16">
@@ -79,67 +48,80 @@
       <div class="transition-all duration-700"
         class:opacity-0={!visible} class:opacity-100={visible}>
 
-        <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#C9A84C] font-futura">{$t.contact_label}</p>
-        <h2 class="mb-6 text-[#162d39] font-playfair font-bold text-section">{$t.contact_h2}</h2>
-        <div class="w-14 h-0.5 mb-8 bg-[#C9A84C]"></div>
+        <p class="text-xs tracking-[0.2em] uppercase mb-3 text-[#d8b269] font-futura">{i18n.t.contact.label}</p>
+        <h2 class="mb-6 text-[#162d39] font-playfair font-bold text-section">{i18n.t.contact.h2}</h2>
+        <div class="w-14 h-0.5 mb-8 bg-[#d8b269]"></div>
 
         <p class="text-sm leading-relaxed mb-10 text-gray-500">
-          {$t.contact_body}
+          {i18n.t.contact.body}
         </p>
 
         <div class="flex flex-col gap-6 mb-10">
           {#each [
-            { label: $t.contact_phone_label, value: config.phoneDisplay, href: `tel:${config.phone}` },
-            { label: $t.contact_text_label,  value: config.textDisplay,  href: `sms:${config.text}` },
+            { label: i18n.t.contact.phoneLabel, value: config.phoneDisplay, href: `tel:${config.phone}` },
+            { label: i18n.t.contact.textLabel,  value: config.textDisplay,  href: `sms:${config.text}` },
           ] as c}
             <div class="flex items-center gap-4">
-              <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(201,168,76,0.3)] bg-[rgba(201,168,76,0.05)]">
-                <span class="text-xs uppercase tracking-widest text-[#C9A84C] font-futura">
+              <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(216,178,105,0.3)] bg-[rgba(216,178,105,0.05)]">
+                <span class="text-xs uppercase tracking-widest text-[#d8b269] font-futura">
                   {c.label[0]}
                 </span>
               </div>
               <div>
                 <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-futura">{c.label}</p>
-                <a href={c.href} class="text-sm text-[#162d39] hover:text-[#C9A84C] transition-colors">{c.value}</a>
+                <a href={c.href} class="text-sm text-[#162d39] hover:text-[#d8b269] transition-colors">{c.value}</a>
               </div>
             </div>
           {/each}
           <!-- Email obfuscated to prevent scraping -->
           <div class="flex items-center gap-4">
-            <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(201,168,76,0.3)] bg-[rgba(201,168,76,0.05)]">
-              <span class="text-xs uppercase tracking-widest text-[#C9A84C] font-futura">
-                {$t.contact_email_label[0]}
+            <div class="w-10 h-10 shrink-0 flex items-center justify-center border border-[rgba(216,178,105,0.3)] bg-[rgba(216,178,105,0.05)]">
+              <span class="text-xs uppercase tracking-widest text-[#d8b269] font-futura">
+                {i18n.t.contact.emailLabel[0]}
               </span>
             </div>
             <div>
-              <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-futura">{$t.contact_email_label}</p>
-              <ObfuscatedEmail email={config.email} class="text-sm text-[#162d39] hover:text-[#C9A84C] transition-colors" />
+              <p class="text-xs uppercase tracking-widest mb-0.5 text-gray-400 font-futura">{i18n.t.contact.emailLabel}</p>
+              <ObfuscatedEmail email={config.email} class="text-sm text-[#162d39] hover:text-[#d8b269] transition-colors" />
             </div>
           </div>
         </div>
 
         <div class="pt-8 border-t border-gray-200">
-          <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#C9A84C] font-futura">{$t.contact_locations_label}</p>
-          <div class="flex flex-col gap-3">
-            {#each locations as loc}
-              <button
-                type="button"
-                onclick={() => openMap(loc)}
-                class="flex gap-3 items-start text-left group w-full hover:bg-[rgba(201,168,76,0.05)] transition-colors duration-150 p-2 -mx-2 rounded-sm cursor-pointer"
-              >
-                <span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-[#C9A84C] group-hover:scale-125 transition-transform duration-150"></span>
-                <div class="flex-1">
-                  <p class="text-xs uppercase tracking-widest mb-0.5 text-[#162d39] font-futura group-hover:text-[#C9A84C] transition-colors duration-150">{loc.city}</p>
-                  <p class="text-xs text-gray-400">{loc.addr}</p>
+          <p class="text-xs uppercase tracking-[0.2em] mb-5 text-[#d8b269] font-futura">{i18n.t.contact.locationsLabel}</p>
+          <div class="flex flex-col gap-5">
+            {#each [
+              { city: 'Birmingham, AL', addr: '231 22nd St S #203, Birmingham AL 35233' },
+              { city: 'Miami, FL',       addr: '201 S Biscayne Blvd #8910, Miami FL 33131' },
+              { city: 'Houston, TX',     addr: '12 Greenway Plz #1100, Houston TX 77027' },
+            ] as loc}
+              <address class="flex gap-3 items-start not-italic">
+                <span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-[#d8b269]"></span>
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest mb-0.5 font-futura text-[#162d39]">{loc.city}</p>
+                  <p class="text-xs text-gray-400 mb-1">{loc.addr}</p>
+                  <a href="https://maps.google.com/?q={encodeURIComponent(loc.addr)}" target="_blank" rel="noopener"
+                    class="text-xs text-[#d8b269] hover:text-[#162d39] transition-colors">
+                    {i18n.t.contact.getDirections}
+                  </a>
                 </div>
-                <svg class="w-3.5 h-3.5 text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
-                </svg>
-              </button>
+              </address>
             {/each}
           </div>
         </div>
+
+        <div class="mt-8">
+          <iframe
+            title="Counsel Hound — Birmingham, AL office location"
+            src="https://www.google.com/maps?q=231+22nd+St+S+%23203+Birmingham+AL+35233&output=embed"
+            width="100%"
+            height="220"
+            style="border:0;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
       </div>
 
       <!-- Form -->
@@ -148,11 +130,11 @@
 
         {#if submitted}
           <div class="flex flex-col items-center justify-center h-full gap-6 text-center py-16">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center border-2 border-[#C9A84C]">
-              <svg class="w-7 h-7 text-[#C9A84C]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <div class="w-16 h-16 rounded-full flex items-center justify-center border-2 border-[#d8b269]">
+              <svg class="w-7 h-7 text-[#d8b269]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
             </div>
-            <h3 class="text-xl uppercase tracking-widest text-[#162d39] font-futura">{$t.form_success_h}</h3>
-            <p class="text-sm max-w-xs text-[rgba(240,237,232,0.6)]">{$t.form_success_p}</p>
+            <h3 class="text-xl uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.successH}</h3>
+            <p class="text-sm max-w-xs text-[rgba(22,45,57,0.6)]">{i18n.t.contact.form.successP}</p>
           </div>
         {:else}
           <form
@@ -166,52 +148,51 @@
                 if (result.type === 'success') {
                   submitted = true;
                 } else if (result.type === 'failure') {
-                  error = (result.data as any)?.error || $t.form_error_default;
+                  error = (result.data as any)?.error || i18n.t.contact.form.errorDefault;
                   await update();
                 }
               };
             }}
           >
             <!-- Honeypot -->
-            <div class="absolute -left-2499.75 opacity-0 pointer-events-none" aria-hidden="true">
+            <div class="absolute -left-[9999px] opacity-0 pointer-events-none" aria-hidden="true">
               <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="flex flex-col gap-2">
-                <label for="contact-name" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_name} *</label>
-                <input id="contact-name" name="name" type="text" placeholder="Jane Smith" required
-                  class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
-              </div>
-              <div class="flex flex-col gap-2">
-                <label for="contact-email" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_email} *</label>
-                <input id="contact-email" name="email" type="email" placeholder="jane@email.com" required
-                  class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
-              </div>
-            </div>
-
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="flex flex-col gap-2">
-                <label for="contact-phone" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_phone}</label>
-                <input id="contact-phone" name="phone" type="tel" placeholder="+1 (555) 000-0000"
-                  class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors" />
-              </div>
-              <div class="flex flex-col gap-2">
-                <label for="contact-case" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_case_type}</label>
-                <select id="contact-case" name="caseType"
-                  class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors">
-                  <option value="">{$t.form_case_placeholder}</option>
-                  {#each ($lang === 'es' ? caseTypesEs : caseTypesEn) as ct, i}
-                    <option value={caseTypesEn[i]}>{ct}</option>
-                  {/each}
-                </select>
-              </div>
+            <div class="flex flex-col gap-2">
+              <label for="contact-name" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.name} *</label>
+              <input id="contact-name" name="name" type="text" placeholder="Jane Smith" required
+                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#d8b269] transition-colors" />
             </div>
 
             <div class="flex flex-col gap-2">
-              <label for="contact-message" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{$t.form_message} *</label>
-              <textarea id="contact-message" name="message" rows="5" placeholder={$t.form_message_placeholder} required
-                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#C9A84C] transition-colors resize-none"></textarea>
+              <label for="contact-email" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.email} *</label>
+              <input id="contact-email" name="email" type="email" placeholder="jane@email.com" required
+                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#d8b269] transition-colors" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="contact-phone" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.phone}</label>
+              <input id="contact-phone" name="phone" type="tel" placeholder="(555) 000-0000"
+                oninput={formatPhone}
+                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#d8b269] transition-colors" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="contact-case" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.caseType}</label>
+              <select id="contact-case" name="caseType"
+                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#d8b269] transition-colors">
+                <option value="">{i18n.t.contact.form.casePlaceholder}</option>
+                {#each i18n.t.contact.caseTypes as ct, i}
+                  <option value={caseTypesEn[i]}>{ct}</option>
+                {/each}
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="contact-message" class="text-xs uppercase tracking-widest text-[#162d39] font-futura">{i18n.t.contact.form.message} *</label>
+              <textarea id="contact-message" name="message" rows="5" placeholder={i18n.t.contact.form.messagePlaceholder} required
+                class="px-4 py-3 text-sm text-[#162d39] bg-white border border-gray-200 outline-none focus:border-[#d8b269] transition-colors resize-none"></textarea>
             </div>
 
             {#if error}
@@ -219,12 +200,12 @@
             {/if}
 
             <button type="submit" disabled={submitting}
-              class="w-full py-4 mt-2 bg-[#C9A84C] text-[#0D1B2A] text-xs font-bold tracking-[0.15em] uppercase hover:brightness-110 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
-              {submitting ? $t.form_submitting : $t.form_submit}
+              class="w-full py-4 mt-2 bg-[#d8b269] text-[#162d39] text-xs font-bold tracking-[0.15em] uppercase hover:brightness-110 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
+              {submitting ? i18n.t.contact.form.submitting : i18n.t.contact.form.submit}
             </button>
 
             <p class="text-xs text-center text-gray-400">
-              {$t.form_confidential}
+              {i18n.t.contact.form.confidential}
             </p>
           </form>
         {/if}
@@ -234,60 +215,3 @@
   </div>
 </section>
 
-<!-- Map Modal -->
-{#if mapOpen && activeLocation}
-  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-  <div
-    role="dialog"
-    aria-modal="true"
-    aria-label="Office location map"
-    tabindex="-1"
-    class="fixed inset-0 z-99999 flex items-center justify-center bg-black/70 px-4"
-    onclick={closeMap}
-    onkeydown={(e) => e.key === 'Escape' && closeMap()}
-  >
-    <div
-      class="bg-[#0D1B2A] w-full max-w-2xl shadow-2xl flex flex-col overflow-hidden"
-      onclick={(e) => e.stopPropagation()}
-      role="presentation"
-    >
-      <!-- Header -->
-      <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
-        <div>
-          <p class="text-[#C9A84C] text-[10px] uppercase tracking-[0.2em] font-futura mb-0.5">{$t.contact_map_our_location}</p>
-          <p class="text-white text-sm font-bold font-futura">{activeLocation.city}</p>
-          <p class="text-white/50 text-xs mt-0.5">{activeLocation.addr}</p>
-        </div>
-        <button
-          type="button"
-          onclick={closeMap}
-          class="text-white/40 hover:text-white transition-colors text-2xl leading-none ml-6"
-          aria-label="Close"
-        >&times;</button>
-      </div>
-
-      <!-- Map -->
-      <div class="relative bg-[#162d39]" style="height: 380px;">
-        <iframe
-          title="Office location — {activeLocation.city}"
-          width="100%"
-          height="100%"
-          style="border:0;"
-          loading="lazy"
-          src={activeLocation.embedUrl}
-        ></iframe>
-      </div>
-
-      <!-- Footer -->
-      <div class="flex items-center justify-between px-6 py-3 border-t border-white/10">
-        <p class="text-white/30 text-[11px]">{$t.contact_map_osm}</p>
-        <a
-          href={activeLocation.mapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-[11px] text-[#C9A84C] font-bold uppercase tracking-widest hover:brightness-125 transition-all font-futura"
-        >{$t.contact_map_open} &rarr;</a>
-      </div>
-    </div>
-  </div>
-{/if}

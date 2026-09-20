@@ -7,6 +7,16 @@
   --font-futura-cyrillic: 'FuturaCyrillic', 'Futura', ui-sans-serif, sans-serif;
   --font-playfair: 'Playfair Display', ui-serif, Georgia, serif;
 
+  /* Brand colors — matched to Nav/site components */
+  --color-navy:     #162d39;
+  --color-navy-dark: #0D1B2A;
+  --color-gold:     #d8b269;
+  --color-gold-hover: #c9a058;
+  --color-gold-active: #eed08b;
+  --color-gold-subtle: #f7d789;
+  --color-primary:  #162d39;
+  --color-cream:    #F0EDE8;
+
   /* Fluid type scale — used in place of inline clamp() font-size styles */
   --text-hero: clamp(2.5rem, 6vw, 4rem);
   --text-section: clamp(1.8rem, 3vw, 2.4rem);

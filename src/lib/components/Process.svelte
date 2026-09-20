@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { config } from '$lib/config';
-  import { t } from '$lib/i18n';
+  import { i18n } from '$lib/i18n/index.svelte';
   let el: HTMLElement;
   let visible = $state(false);
 
@@ -18,12 +18,12 @@
   <div class="max-w-5xl mx-auto px-6">
 
     <div class="text-center mb-16">
-      <p class="text-xs uppercase tracking-[0.2em] text-[#8B6914] mb-3">{$t.process_label}</p>
-      <h2 class="text-4xl font-bold text-[#162d39] font-playfair">{$t.process_h2}</h2>
+      <p class="text-xs uppercase tracking-[0.2em] text-[#8B6914] mb-3">{i18n.t.process.label}</p>
+      <h2 class="text-4xl font-bold text-[#162d39] font-playfair">{i18n.t.process.h2}</h2>
     </div>
 
     <div class="grid md:grid-cols-3 gap-8">
-      {#each $t.process_steps as step, i}
+      {#each i18n.t.process.steps as step, i}
         <div
           class="flex flex-col transition-all duration-700"
           class:opacity-0={!visible}
@@ -56,9 +56,9 @@
         href={config.consultationUrl}
         target="_blank"
         rel="noopener"
-        class="inline-block px-8 py-3 bg-[#C9A84C] text-[#0D1B2A] text-sm font-semibold uppercase tracking-widest hover:brightness-110 transition-all duration-200"
+        class="inline-block px-8 py-3 bg-[#d8b269] text-[#162d39] text-sm font-semibold uppercase tracking-widest hover:brightness-110 transition-all duration-200"
       >
-        {$t.process_cta}
+        {i18n.t.process.cta}
       </a>
     </div>
 

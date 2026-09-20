@@ -10,12 +10,15 @@ binding = "ASSETS"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "counselhound-blog"
-database_id = "b7323985-5fcb-422b-8bee-0e10ff7de7c6"
+database_name = "frankowskifirm-blog"
+database_id = "3f7a25da-e6bb-48ec-bac6-2fa1b977fb41"
 
 [ai]
 binding = "AI"
 
 [vars]
-ADMIN_PASSWORD = "changeme123"
+PUBLIC_GA_ID = "G-47Y2TV1GSB"
+# ADMIN_PASSWORD removed 2026-09-04 — it was dead config, never read anywhere in the app.
+# Real admin auth is email OTP (see src/routes/(admin)/admin/login) signed with the
+# ADMIN_OTP_SECRET Cloudflare secret, not a static password.
 # RESEND_API_KEY is stored as a Cloudflare secret — do not add here
